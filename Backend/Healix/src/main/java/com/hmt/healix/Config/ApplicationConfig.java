@@ -23,12 +23,10 @@ public class ApplicationConfig {
 
     @Bean
     public UserDetailsService userDetailsService() {
-        System.out.println("userdetail service");
         return new UserDetailsService() {
 
             @Override
             public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-                System.out.println("inside load user by username");
                 return userRepository.findByEmail(username).orElseThrow(() -> new UsernameNotFoundException("user not found"));
             }
         };
@@ -36,17 +34,14 @@ public class ApplicationConfig {
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
-        System.out.println("authentication manager");
         return configuration.getAuthenticationManager();
     }
 
     @Bean
     public AuthenticationProvider authenticationProvider() {
-        System.out.println("authentication provider");
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setUserDetailsService(userDetailsService());
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
-        System.out.println("authentication provider before return ");
         return daoAuthenticationProvider;
     }
 

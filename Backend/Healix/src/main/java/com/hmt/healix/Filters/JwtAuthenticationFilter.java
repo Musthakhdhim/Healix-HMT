@@ -1,5 +1,6 @@
 package com.hmt.healix.Filters;
 
+import com.hmt.healix.Exception.JwtSessionTimeoutException;
 import com.hmt.healix.Service.JwtService;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
@@ -37,24 +38,17 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String token;
         final String userEmail;
 
-        System.out.println("from filter");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
-            System.out.println("return when null filter");
             return;
         }
         try{
             token = authHeader.substring(7);
             userEmail=jwtService.extractEmail(token);
 
-            System.out.println("Token from request: " + token);
-            System.out.println("Extracted username: " + userEmail);
-
             if(userEmail != null && SecurityContextHolder.getContext().getAuthentication()==null) {
-                System.out.println("✅ Token is valid. Setting authentication.");
                 UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
                 if(jwtService.isTokenValid(token, userDetails)) {
-                    System.out.println("setting token valid");
                     UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                             userDetails, null, userDetails.getAuthorities()
                     );
@@ -63,16 +57,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     );
                     SecurityContextHolder.getContext().setAuthentication(authentication);
                 }
-                else {
-                    System.out.println("❌ Token is invalid or expired.");
-                }
-
             }
-            System.out.println("returning request filter");
             filterChain.doFilter(request, response);
         }
         catch (JwtException e){
-            e.printStackTrace();
+            throw new JwtSessionTimeoutException("your login session has expired, please login again");
         }
     }
 }

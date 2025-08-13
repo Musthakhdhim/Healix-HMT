@@ -18,8 +18,8 @@ public class UserController {
         return "Hello";
     }
 
-    @Autowired
-    private EmailService emailService;
+//    @Autowired
+//    private EmailService emailService;
 
 //    @GetMapping("/send-test-email")
 //    public String sendTestEmail() {
