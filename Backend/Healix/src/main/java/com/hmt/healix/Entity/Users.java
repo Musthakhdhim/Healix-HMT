@@ -37,7 +37,7 @@ public class Users implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+role.name()));
     }
 
     @Override
@@ -65,7 +65,8 @@ public class Users implements UserDetails {
         return true;
     }
     @Override
-        public boolean isEnabled() {
-            return enabled;
+    public boolean isEnabled() {
+        //return enabled;
+            return true;
     }
 }

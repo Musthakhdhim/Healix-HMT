@@ -1,6 +1,7 @@
 package com.hmt.healix.Filters;
 
 import com.hmt.healix.Service.JwtService;
+import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -8,6 +9,11 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.AllArgsConstructor;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -18,6 +24,7 @@ import java.io.IOException;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final UserDetailsService userDetailsService;
 
     @Override
     protected void doFilterInternal(
@@ -30,12 +37,42 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String token;
         final String userEmail;
 
+        System.out.println("from filter");
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
+            System.out.println("return when null filter");
             return;
         }
-        token = authHeader.substring(7);
-        userEmail=jwtService.extractEmail(token);
+        try{
+            token = authHeader.substring(7);
+            userEmail=jwtService.extractEmail(token);
 
+            System.out.println("Token from request: " + token);
+            System.out.println("Extracted username: " + userEmail);
+
+            if(userEmail != null && SecurityContextHolder.getContext().getAuthentication()==null) {
+                System.out.println("✅ Token is valid. Setting authentication.");
+                UserDetails userDetails = userDetailsService.loadUserByUsername(userEmail);
+                if(jwtService.isTokenValid(token, userDetails)) {
+                    System.out.println("setting token valid");
+                    UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                            userDetails, null, userDetails.getAuthorities()
+                    );
+                    authentication.setDetails(
+                            new WebAuthenticationDetailsSource().buildDetails(request)
+                    );
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+                else {
+                    System.out.println("❌ Token is invalid or expired.");
+                }
+
+            }
+            System.out.println("returning request filter");
+            filterChain.doFilter(request, response);
+        }
+        catch (JwtException e){
+            e.printStackTrace();
+        }
     }
 }
