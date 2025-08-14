@@ -33,4 +33,14 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleJwtSessionTimeoutException(JwtSessionTimeoutException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.GATEWAY_TIMEOUT);
     }
+
+    @ExceptionHandler(UsersNotFoundException.class)
+    public ResponseEntity<?> handleUsersNotFoundException(UsersNotFoundException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(AlreadyVerifiedException.class)
+    public ResponseEntity<?> handleAlreadyVerifiedException(AlreadyVerifiedException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
 }

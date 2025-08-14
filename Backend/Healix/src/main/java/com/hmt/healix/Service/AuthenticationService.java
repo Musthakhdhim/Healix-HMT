@@ -43,10 +43,11 @@ public class AuthenticationService {
         }
         var user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRole(Role.PATIENT);
+        user.setRole(request.getRole());
         user.setVerificationCode(generateVerficationCode());
         user.setVerificationCodeExpireAt(LocalDateTime.now().plusMinutes(1));
         user.setEnabled(false);
+        user.setAdminAuthorised(false);
         sendVerificationEmail(user);
 
         userRepository.save(user);
@@ -55,18 +56,17 @@ public class AuthenticationService {
     }
 
     public AuthenticationResponse login(LoginRequest request) {
-        System.out.println("from login");
-        System.out.println("from logni");
-        var user=userRepository.findByEmail(request.getEmail()).orElseThrow(()->{
-            throw new UsernameNotFoundException("user not found");
-        });
+        var user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new UsersNotFoundException("user not found"));
 
-        if(!user.isEnabled()){
-            System.out.println("user not enabled");
-//            throw new RuntimeException("account is not verified, please verify your account");
+        if (!user.isEnabled()) {
             throw new AccountNotVerifiedException("account is not yet verified, please verify your account");
         }
-        System.out.println("user verified");
+
+        if (user.getRole() == Role.DOCTOR && !user.isAdminAuthorised()) {
+            throw new AccountNotVerifiedException("Doctor account is pending admin approval");
+        }
+
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         request.getEmail(),
@@ -74,29 +74,33 @@ public class AuthenticationService {
                 )
         );
 
-        var token=jwtService.generateToken(user);
+        var token = jwtService.generateToken(user);
         return new AuthenticationResponse(token);
     }
 
-    public void verifyUser(VerfiyUserDto dto){
-        Optional<Users> optionalUsers=userRepository.findByEmail(dto.getEmail());
-        if(optionalUsers.isPresent()){
-            Users user=optionalUsers.get();
-            if(user.getVerificationCodeExpireAt().isBefore(LocalDateTime.now())){
+    public void verifyUser(VerfiyUserDto dto) {
+        Optional<Users> optionalUsers = userRepository.findByEmail(dto.getEmail());
+        if (optionalUsers.isPresent()) {
+            Users user = optionalUsers.get();
+            if (user.getVerificationCodeExpireAt().isBefore(LocalDateTime.now())) {
                 throw new VerficationCodeExpiredException("verification code has expired, try resending the code");
             }
-            if(user.getVerificationCode().equals(dto.getVerificationCode())){
+            if (user.getVerificationCode().equals(dto.getVerificationCode())) {
                 user.setEnabled(true);
+
+                // For patients → allow login directly
+                // For doctors → still require admin approval
+                if (user.getRole() == Role.PATIENT) {
+                    user.setAdminAuthorised(true);
+                }
+
                 user.setVerificationCode(null);
                 user.setVerificationCodeExpireAt(null);
-
                 userRepository.save(user);
+            } else {
+                throw new WrongVerificationCodeException("your verification code is incorrect, try again");
             }
-            else{
-                throw new WrongVerificationCodeException("your verification code is incorrect,try again");
-            }
-        }
-        else{
+        } else {
             throw new UserNotFoundException("user not found");
         }
     }
@@ -109,7 +113,7 @@ public class AuthenticationService {
             System.out.println(user.toString());
             if(user.isEnabled()){
                 System.out.println("user already verified");
-                throw new RuntimeException("user already verified");
+                throw new AlreadyVerifiedException("user already verified");
             }
             user.setVerificationCode(generateVerficationCode());
             user.setVerificationCodeExpireAt(LocalDateTime.now().plusMinutes(15));
