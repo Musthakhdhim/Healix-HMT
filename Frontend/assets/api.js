@@ -26,24 +26,25 @@ export async function apiFetch(url, options = {}) {
   };
   const res = await fetch(url, { ...options, headers });
 
+  // Try to read once
+  let bodyText = await res.text();
+  let bodyJson;
+  try {
+    bodyJson = bodyText ? JSON.parse(bodyText) : null;
+  } catch {
+    bodyJson = null; // not JSON
+  }
+
   if (!res.ok) {
-    // try parse JSON {message: "..."} else fall back to text
-    let msg;
-    try {
-      const data = await res.json();
-      msg = data?.message || JSON.stringify(data);
-    } catch {
-      msg = await res.text();
-    }
-    const err = new Error(msg || `HTTP ${res.status}`);
+    const msg = bodyJson?.message || bodyText || `HTTP ${res.status}`;
+    const err = new Error(msg);
     err.status = res.status;
     throw err;
   }
 
-  // if response is empty
-  const text = await res.text();
-  try { return text ? JSON.parse(text) : null; } catch { return text; }
+  return bodyJson !== null ? bodyJson : bodyText;
 }
+
 
 // JWT decode (no external libs)
 export function decodeJwt(token) {
@@ -84,9 +85,7 @@ export async function registerUser({ username, email, password, role }) {
     method: "POST",
     body: JSON.stringify({ username, email, password, role })
   });
-  // Backend returns { token }, but user still needs verification to log in
   if (data?.token) saveToken(data.token);
-  // keep email for verify step
   localStorage.setItem(EMAIL_KEY, email);
   return data;
 }

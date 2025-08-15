@@ -43,11 +43,9 @@
   const alertBox = document.getElementById("alert");
   const form = document.getElementById("loginForm");
 
-  // Show message from query string (e.g., session expired)
   const msg = getQueryMessage();
   if (msg) showAlert(alertBox, decodeURIComponent(msg), "warning");
 
-  // Bootstrap validation
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearAlert(alertBox);
@@ -60,13 +58,19 @@
     const password = document.getElementById("password").value;
 
     try {
-      clearToken(); // clear any stale token
+      clearToken(); 
       await loginUser({ email, password });
       window.location.replace("dashboard.html");
     } catch (err) {
+      if (err.message?.toLowerCase().includes("not yet verified")) {
+        localStorage.setItem("pendingEmail", email);
+        window.location.replace("verify.html");
+        return;
+      }
       showAlert(alertBox, err.message || "Login failed");
     }
   });
 </script>
+
 </body>
 </html>

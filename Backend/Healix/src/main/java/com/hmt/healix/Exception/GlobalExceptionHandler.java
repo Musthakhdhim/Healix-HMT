@@ -2,8 +2,12 @@ package com.hmt.healix.Exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -42,5 +46,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(AlreadyVerifiedException.class)
     public ResponseEntity<?> handleAlreadyVerifiedException(AlreadyVerifiedException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex){
+        Map<String,String> map = new HashMap<>();
+        ex.getBindingResult().getFieldErrors().forEach(fieldError -> {
+            String field = fieldError.getField();
+            String message = fieldError.getDefaultMessage();
+            map.put(field, message);
+        });
+        return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
 }

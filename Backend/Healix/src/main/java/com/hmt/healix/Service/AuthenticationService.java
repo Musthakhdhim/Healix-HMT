@@ -9,9 +9,9 @@ import com.hmt.healix.Entity.Users;
 import com.hmt.healix.Exception.*;
 import com.hmt.healix.Mapper.UserMapper;
 import com.hmt.healix.Repository.UserRepository;
-import io.jsonwebtoken.Jwt;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -33,9 +34,12 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
     private final EmailService emailService;
 
-    public AuthenticationResponse register(RegisterRequest request) {
+    public ResponseEntity<?> register(RegisterRequest request) {
         if(userRepository.existsByEmail(request.getEmail())){
             throw new AlreadyExistsException("Email already exists");
+//            return ResponseEntity.badRequest().body(
+//                    Map.of("email","email already registered")
+//            );
         }
 
         if(userRepository.existsByUsername(request.getUsername())){
@@ -51,8 +55,8 @@ public class AuthenticationService {
         sendVerificationEmail(user);
 
         userRepository.save(user);
-        var token=jwtService.generateToken(user);
-        return new AuthenticationResponse(token);
+//        var token=jwtService.generateToken(user);
+        return ResponseEntity.ok(user);
     }
 
     public AuthenticationResponse login(LoginRequest request) {
