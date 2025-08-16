@@ -1,9 +1,12 @@
 package com.hmt.healix.Service;
 
 import com.hmt.healix.Config.JwtConfig;
+import com.hmt.healix.Entity.Role;
+import com.hmt.healix.Repository.UserRepository;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -18,10 +21,16 @@ import java.util.function.Function;
 public class JwtService {
 
     private final JwtConfig jwtConfig;
+    private final UserRepository userRepository;
 
     public String extractEmail(String token) {
         return extractClaim(token, Claims::getSubject);
     }
+
+    public String extractRole(String token) {
+        return extractClaim(token,claims->claims.get("role",String.class));
+    }
+
 
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
@@ -48,8 +57,15 @@ public class JwtService {
                 .compact();
     }
 
+//    public String generateToken(UserDetails userDetails) {
+//        return generateToken(new HashMap<>(), userDetails);
+//    }
+
     public String generateToken(UserDetails userDetails) {
-        return generateToken(new HashMap<>(), userDetails);
+        Map<String, Object> extraClaims = new HashMap<>();
+        userRepository.findByEmail(userDetails.getUsername())
+                .ifPresent(user -> extraClaims.put("role", user.getRole().name()));
+        return generateToken(extraClaims, userDetails);
     }
 
     public boolean isTokenValid(String token,
@@ -66,4 +82,13 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public String getTokenFromAuthorization(HttpServletRequest request){
+        String authHeader= request.getHeader("Authorization");
+        if(authHeader==null || !authHeader.startsWith("Bearer ")){
+            throw new RuntimeException("token not found in the request");
+        }
+        String token=authHeader.replace("Bearer ","");
+
+        return token;
+    }
 }

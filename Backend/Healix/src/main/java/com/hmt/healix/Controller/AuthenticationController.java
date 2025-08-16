@@ -12,6 +12,8 @@ import org.apache.coyote.Response;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @AllArgsConstructor
@@ -49,5 +51,10 @@ public class AuthenticationController {
         catch(Exception e){
             return ResponseEntity.badRequest().body(e.getMessage());
         }
+    }
+
+    @GetMapping("/current-user")
+    public ResponseEntity<Map<String, String>> getCurrentUser(@RequestHeader("Authorization") String authHeader) {
+        return ResponseEntity.ok(authenticationService.getCurrentUser(authHeader));
     }
 }

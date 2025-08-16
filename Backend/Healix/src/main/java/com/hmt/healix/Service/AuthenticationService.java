@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
@@ -56,7 +57,8 @@ public class AuthenticationService {
 
         userRepository.save(user);
 //        var token=jwtService.generateToken(user);
-        return ResponseEntity.ok(user);
+//        return ResponseEntity.ok();
+        return ResponseEntity.ok("User registered successfully.");
     }
 
     public AuthenticationResponse login(LoginRequest request) {
@@ -159,5 +161,16 @@ public class AuthenticationService {
         Random random=new Random();
         int code=random.nextInt(900000)+100000;
         return String.valueOf(code);
+    }
+
+    public Map<String, String> getCurrentUser(String authHeader) {
+        String token = authHeader.substring(7);
+        String email = jwtService.extractEmail(token);
+        String role = jwtService.extractRole(token);
+
+        Map<String, String> response = new HashMap<>();
+        response.put("email", email);
+        response.put("role", role);
+        return response;
     }
 }

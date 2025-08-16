@@ -1,5 +1,6 @@
 package com.hmt.healix.Config;
 
+import com.hmt.healix.Entity.Role;
 import com.hmt.healix.Filters.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -32,6 +33,8 @@ public class SecurityConfig {
                 .csrf(c->c.disable())
                 .authorizeHttpRequests(r->
                             r.requestMatchers("/api/v1/auth/**").permitAll()
+                                    .requestMatchers("/api/v1/patient/**").hasRole("PATIENT")
+//                              .requestMatchers("/api/v1/patient/**").hasAuthority(String.valueOf(Role.PATIENT))
                         .anyRequest().authenticated()
 
                         )

@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Edit Profile - Healix</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <a href="../patientDashboard.html">
+        <button class="btn btn-primary mx-3 my-3">Go back</button>
+    </a>    
+  <div class="container mt-5">
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="card shadow-lg rounded-4">
+          <div class="card-body p-4">
+            <h3 class="text-center mb-4">My Profile</h3>
+
+            <!-- Profile Display -->
+            <div id="profileView" class="mb-3">
+              <dl class="row">
+                <dt class="col-sm-4">Full Name</dt>
+                <dd class="col-sm-8" id="viewFullName"></dd>
+
+                <dt class="col-sm-4">Date of Birth</dt>
+                <dd class="col-sm-8" id="viewDob"></dd>
+
+                <dt class="col-sm-4">Gender</dt>
+                <dd class="col-sm-8" id="viewGender"></dd>
+
+                <dt class="col-sm-4">Phone Number</dt>
+                <dd class="col-sm-8" id="viewPhonenumber"></dd>
+
+                <dt class="col-sm-4">Address</dt>
+                <dd class="col-sm-8" id="viewAddress"></dd>
+              </dl>
+            </div>
+
+            <div class="d-grid">
+              <button id="editBtn" class="btn btn-primary">Edit Profile</button>
+            </div>
+
+            <div id="message" class="mt-3 text-center"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Edit Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content rounded-4 shadow">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Profile</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <form id="editProfileForm" novalidate>
+            <div class="mb-3">
+              <label for="fullName" class="form-label">Full Name</label>
+              <input type="text" class="form-control" id="fullName" required minlength="3">
+            </div>
+            <div class="mb-3">
+              <label for="dob" class="form-label">Date of Birth</label>
+              <input type="date" class="form-control" id="dob" required>
+            </div>
+            <div class="mb-3">
+              <label for="gender" class="form-label">Gender</label>
+              <select class="form-select" id="gender" required>
+                <option value="">-- Select Gender --</option>
+                <option value="MALE">Male</option>
+                <option value="FEMALE">Female</option>
+                <option value="OTHER">Other</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="phonenumber" class="form-label">Phone Number</label>
+              <input type="text" class="form-control" id="phonenumber" required pattern="^[0-9]{10}$">
+            </div>
+            <div class="mb-3">
+              <label for="address" class="form-label">Address</label>
+              <textarea class="form-control" id="address" rows="3" required></textarea>
+            </div>
+            <div class="d-grid">
+              <button type="submit" class="btn btn-success">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module">
+    import { requireAuth, getPatientProfile, updatePatientProfile, handleAuthError } from "../../assets/api.js";
+
+    requireAuth();
+
+    const message = document.getElementById("message");
+    const editBtn = document.getElementById("editBtn");
+    const editModal = new bootstrap.Modal(document.getElementById("editModal"));
+    const form = document.getElementById("editProfileForm");
+
+    let currentProfile = {};
+
+    // Load profile
+    async function loadProfile() {
+      try {
+        const data = await getPatientProfile();
+        currentProfile = data;
+        document.getElementById("viewFullName").innerText = data.fullName;
+        document.getElementById("viewDob").innerText = data.dob;
+        document.getElementById("viewGender").innerText = data.gender;
+        document.getElementById("viewPhonenumber").innerText = data.phonenumber;
+        document.getElementById("viewAddress").innerText = data.address;
+      } catch (e) {
+        handleAuthError(e);
+        message.innerHTML = `<div class="alert alert-danger">Failed to load profile</div>`;
+      }
+    }
+
+    // Open modal with pre-filled data
+    editBtn.addEventListener("click", () => {
+      document.getElementById("fullName").value = currentProfile.fullName || "";
+      document.getElementById("dob").value = currentProfile.dob || "";
+      document.getElementById("gender").value = currentProfile.gender || "";
+      document.getElementById("phonenumber").value = currentProfile.phonenumber || "";
+      document.getElementById("address").value = currentProfile.address || "";
+      editModal.show();
+    });
+
+    // Save changes
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+
+      if (!form.checkValidity()) {
+        form.classList.add("was-validated");
+        return;
+      }
+
+      if (!confirm("Are you sure you want to save these changes?")) {
+        return;
+      }
+
+      const updatedData = {
+        fullName: document.getElementById("fullName").value.trim(),
+        dob: document.getElementById("dob").value,
+        gender: document.getElementById("gender").value,
+        phonenumber: document.getElementById("phonenumber").value,
+        address: document.getElementById("address").value.trim()
+      };
+
+      try {
+        await updatePatientProfile(updatedData);
+        message.innerHTML = `<div class="alert alert-success">Profile updated successfully!</div>`;
+        editModal.hide();
+        loadProfile(); // reload view
+      } catch (err) {
+        handleAuthError(err);
+        message.innerHTML = `<div class="alert alert-danger">${err.message || "Failed to update profile"}</div>`;
+      }
+    });
+
+    // Initial load
+    loadProfile();
+  </script>
+</body>
+</html>

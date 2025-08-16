@@ -37,30 +37,65 @@
   </div>
 
 <script type="module">
-  import { loginUser, saveToken, clearToken } from "./assets/api.js";
+  import { loginUser, clearToken, decodeJwt, getToken, getPatientProfile } from "./assets/api.js";
   import { showAlert, clearAlert, getQueryMessage } from "./assets/ui.js";
 
   const alertBox = document.getElementById("alert");
   const form = document.getElementById("loginForm");
 
+  // Show query param messages
   const msg = getQueryMessage();
   if (msg) showAlert(alertBox, decodeURIComponent(msg), "warning");
 
+  // Role-based redirect
+  async function redirectToRoleDashboard() {
+    const token = getToken();
+    const decoded = decodeJwt(token);
+    const role = decoded?.role?.toUpperCase();
+
+    switch (role) {
+      case "ADMIN":
+        window.location.replace("dashboard/adminDashboard.html");
+        break;
+      case "DOCTOR":
+        window.location.replace("dashboard/doctorDashboard.html");
+        break;
+      case "PATIENT":
+        try {
+          const profile = await getPatientProfile();
+          if (profile && profile.patientId) {
+            window.location.replace("dashboard/patientDashboard.html");
+          } else {
+            window.location.replace("dashboard/Patient/profile.html");
+          }
+        } catch (err) {
+          console.error("Profile fetch error:", err);
+          window.location.replace("dashboard/Patient/profile.html");
+        }
+        break;
+      default:
+        window.location.replace("dashboard.html");
+        break;
+    }
+  }
+
+  // Form submit
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearAlert(alertBox);
 
     if (!form.checkValidity()) {
-      form.classList.add('was-validated');
+      form.classList.add("was-validated");
       return;
     }
+
     const email = document.getElementById("email").value.trim();
     const password = document.getElementById("password").value;
 
     try {
-      clearToken(); 
+      clearToken();
       await loginUser({ email, password });
-      window.location.replace("dashboard.html");
+      redirectToRoleDashboard();
     } catch (err) {
       if (err.message?.toLowerCase().includes("not yet verified")) {
         localStorage.setItem("pendingEmail", email);

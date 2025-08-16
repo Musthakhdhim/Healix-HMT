@@ -1,16 +1,14 @@
 // ======= API CONFIG =======
-const API_BASE = "http://localhost:8080/api/v1"; // matches your CORS config
+const API_BASE = "http://localhost:8080/api/v1";
 const AUTH_BASE = `${API_BASE}/auth`;
 
 const TOKEN_KEY = "accessToken";
-const EMAIL_KEY = "pendingEmail"; // used to carry email to verify page
+const EMAIL_KEY = "pendingEmail"; // used for verify page
 
-// Save / load token
+// ========== TOKEN HELPERS ==========
 export function saveToken(token) { localStorage.setItem(TOKEN_KEY, token); }
 export function getToken() { return localStorage.getItem(TOKEN_KEY); }
 export function clearToken() { localStorage.removeItem(TOKEN_KEY); }
-
-// Helpers
 export function isAuthed() { return !!getToken(); }
 
 export function authHeader() {
@@ -18,21 +16,24 @@ export function authHeader() {
   return t ? { "Authorization": `Bearer ${t}` } : {};
 }
 
-// Unified fetch with error decoding (plain text or JSON)
+// ========== FETCH WRAPPER ==========
 export async function apiFetch(url, options = {}) {
+  const isPublic = url.includes("/auth/register") || url.includes("/auth/login") || url.includes("/auth/verify") || url.includes("/auth/resend");
+
   const headers = {
     "Content-Type": "application/json",
-    ...options.headers,
+    ...(isPublic ? {} : authHeader()),  // do not attach token for public endpoints
+    ...(options.headers || {})
   };
+
   const res = await fetch(url, { ...options, headers });
 
-  // Try to read once
   let bodyText = await res.text();
   let bodyJson;
   try {
     bodyJson = bodyText ? JSON.parse(bodyText) : null;
   } catch {
-    bodyJson = null; // not JSON
+    bodyJson = null;
   }
 
   if (!res.ok) {
@@ -45,8 +46,7 @@ export async function apiFetch(url, options = {}) {
   return bodyJson !== null ? bodyJson : bodyText;
 }
 
-
-// JWT decode (no external libs)
+// ========== JWT DECODE ==========
 export function decodeJwt(token) {
   try {
     const base64Url = token.split('.')[1];
@@ -60,26 +60,25 @@ export function decodeJwt(token) {
   }
 }
 
-// Guard for protected pages
+// ========== AUTH HELPERS ==========
 export function requireAuth() {
   const token = getToken();
   if (!token) {
-    window.location.replace("index.html?m=Please%20log%20in");
+    window.location.replace("../index.html?m=Please%20log%20in");
     return;
   }
 }
 
-// Session expiry handler for protected calls
 export function handleAuthError(e) {
   if ([401, 403, 504].includes(e.status)) {
     clearToken();
-    window.location.replace("index.html?m=Session%20expired%2C%20please%20log%20in");
+    window.location.replace("../index.html?m=Session%20expired%2C%20please%20log%20in");
   } else {
     throw e;
   }
 }
 
-// ======= AUTH API CALLS =======
+// ========== AUTH API ==========
 export async function registerUser({ username, email, password, role }) {
   const data = await apiFetch(`${AUTH_BASE}/register`, {
     method: "POST",
@@ -114,3 +113,24 @@ export async function loginUser({ email, password }) {
 
 export function getPendingEmail() { return localStorage.getItem(EMAIL_KEY) || ""; }
 export function clearPendingEmail() { localStorage.removeItem(EMAIL_KEY); }
+
+// ========== PATIENT API ==========
+const PATIENT_BASE = `${API_BASE}/patient`;
+
+export async function createPatientProfile(patientData) {
+  return apiFetch(`${PATIENT_BASE}`, {
+    method: "POST",
+    body: JSON.stringify(patientData)
+  });   ``
+}
+
+export async function getPatientProfile() {
+  return apiFetch(`${PATIENT_BASE}`, { method: "GET" });
+}
+
+export async function updatePatientProfile(patientData) {
+  return apiFetch(`${PATIENT_BASE}`, {
+    method: "PUT",
+    body: JSON.stringify(patientData)
+  });
+}
