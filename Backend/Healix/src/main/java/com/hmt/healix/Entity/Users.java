@@ -30,7 +30,7 @@ public class Users implements UserDetails {
     private Role role;
 
     @Column(nullable = false)
-    private boolean isAdminAuthorised; // default false for doctors
+    private boolean adminAuthorised; // default false for doctors
 
 
     private boolean enabled;
@@ -47,6 +47,10 @@ public class Users implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public boolean isAdminAuthorised() {
+        return adminAuthorised;
     }
 
     @Override

@@ -134,3 +134,24 @@ export async function updatePatientProfile(patientData) {
     body: JSON.stringify(patientData)
   });
 }
+
+
+// ========== ADMIN API ==========
+const ADMIN_BASE = `${API_BASE}/admin`;
+
+export async function getPendingDoctors() {
+  return apiFetch(`${ADMIN_BASE}/pending-approval`, { method: "GET" });
+}
+
+export async function approveDoctor(doctorId) {
+  return apiFetch(`${ADMIN_BASE}/approve-doctor/${doctorId}`, {
+    method: "POST"
+  });
+}
+
+export async function rejectDoctor(doctorId) {
+  return apiFetch(`${ADMIN_BASE}/reject-doctor/${doctorId}`, {
+    method: "POST"
+  });
+}
+

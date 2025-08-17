@@ -58,4 +58,14 @@ public class GlobalExceptionHandler {
         });
         return new ResponseEntity<>(map, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(UserIsNotDoctorException.class)
+    public ResponseEntity<?> handleUserIsNotDoctor(UserIsNotDoctorException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(AlreadyApprovedException.class)
+    public ResponseEntity<?> handleAlreadyApprovedException(AlreadyApprovedException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
 }
