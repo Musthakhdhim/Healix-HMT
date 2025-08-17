@@ -37,7 +37,10 @@
   </div>
 
 <script type="module">
-  import { loginUser, clearToken, decodeJwt, getToken, getPatientProfile } from "./assets/api.js";
+  import {
+    loginUser, clearToken, decodeJwt, getToken,
+    getPatientProfile, getDoctorProfile
+  } from "./assets/api.js";
   import { showAlert, clearAlert, getQueryMessage } from "./assets/ui.js";
 
   const alertBox = document.getElementById("alert");
@@ -57,9 +60,21 @@
       case "ADMIN":
         window.location.replace("dashboard/adminDashboard.html");
         break;
+
       case "DOCTOR":
-        window.location.replace("dashboard/doctorDashboard.html");
+        try {
+          const profile = await getDoctorProfile();
+          if (profile && profile.doctorId) {
+            window.location.replace("dashboard/doctorDashboard.html");
+          } else {
+            window.location.replace("dashboard/Doctor/doctorProfile.html");
+          }
+        } catch (err) {
+          console.error("Doctor profile fetch error:", err);
+          window.location.replace("dashboard/Doctor/doctorProfile.html");
+        }
         break;
+
       case "PATIENT":
         try {
           const profile = await getPatientProfile();
@@ -73,6 +88,7 @@
           window.location.replace("dashboard/Patient/profile.html");
         }
         break;
+
       default:
         window.location.replace("dashboard.html");
         break;

@@ -1,5 +1,3 @@
-// Small UI helpers shared by pages
-
 export function getQueryMessage() {
   const p = new URLSearchParams(window.location.search);
   return p.get("m");

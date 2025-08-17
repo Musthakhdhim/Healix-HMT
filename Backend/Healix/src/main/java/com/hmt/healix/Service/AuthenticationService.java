@@ -38,9 +38,6 @@ public class AuthenticationService {
     public ResponseEntity<?> register(RegisterRequest request) {
         if(userRepository.existsByEmail(request.getEmail())){
             throw new AlreadyExistsException("Email already exists");
-//            return ResponseEntity.badRequest().body(
-//                    Map.of("email","email already registered")
-//            );
         }
 
         if(userRepository.existsByUsername(request.getUsername())){
@@ -56,8 +53,6 @@ public class AuthenticationService {
         sendVerificationEmail(user);
 
         userRepository.save(user);
-//        var token=jwtService.generateToken(user);
-//        return ResponseEntity.ok();
         return ResponseEntity.ok("User registered successfully.");
     }
 
@@ -94,8 +89,8 @@ public class AuthenticationService {
             if (user.getVerificationCode().equals(dto.getVerificationCode())) {
                 user.setEnabled(true);
 
-                // For patients → allow login directly
-                // For doctors → still require admin approval
+                // For patients -> allow login directly
+                // For doctors -> still require admin approval
                 if (user.getRole() == Role.PATIENT) {
                     user.setAdminAuthorised(true);
                 }
