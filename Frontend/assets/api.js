@@ -159,7 +159,6 @@ export async function rejectDoctor(doctorId) {
 // ========== DOCTOR API ==========
 const DOCTOR_BASE = `${API_BASE}/doctor`;
 
-// Create doctor profile (RegisterDoctorDto) — includes registerNumber
 export async function createDoctorProfile(doctorData) {
   return apiFetch(`${DOCTOR_BASE}`, {
     method: "POST",
@@ -167,12 +166,9 @@ export async function createDoctorProfile(doctorData) {
   });
 }
 
-// Get doctor profile
 export async function getDoctorProfile() {
   return apiFetch(`${DOCTOR_BASE}`, { method: "GET" });
 }
-
-// Update doctor profile (UpdateDoctorDto) — WITHOUT registerNumber
 export async function updateDoctorProfile(doctorData) {
   return apiFetch(`${DOCTOR_BASE}`, {
     method: "PUT",

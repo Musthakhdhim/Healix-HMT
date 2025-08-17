@@ -56,7 +56,7 @@
     function renderDoctors(doctors) {
       tableBody.innerHTML = "";
       if (!doctors || doctors.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="5" class="text-muted">No pending doctors 🎉</td></tr>`;
+        tableBody.innerHTML = `<tr><td colspan="5" class="text-muted">No pending doctors</td></tr>`;
         return;
       }
 
@@ -84,10 +84,10 @@
           try {
             if (action === "approve") {
               await approveDoctor(id);
-              alert("Doctor approved ✅");
+              alert("Doctor approved");
             } else {
               await rejectDoctor(id);
-              alert("Doctor rejected ❌");
+              alert("Doctor rejected");
             }
             loadPendingDoctors(); // refresh table
           } catch (err) {

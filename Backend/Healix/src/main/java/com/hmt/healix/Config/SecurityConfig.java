@@ -1,6 +1,7 @@
 package com.hmt.healix.Config;
 
 import com.hmt.healix.Entity.Role;
+import com.hmt.healix.Filters.AuthRedirectFilter;
 import com.hmt.healix.Filters.JwtAuthenticationFilter;
 import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -41,6 +42,7 @@ public class SecurityConfig {
                         )
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterAfter(new AuthRedirectFilter(), JwtAuthenticationFilter.class)
                 .build();
     }
 
