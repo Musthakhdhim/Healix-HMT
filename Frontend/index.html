@@ -48,11 +48,11 @@
   const alertBox = document.getElementById("alert");
   const form = document.getElementById("loginForm");
 
-  // Show query param messages
+  // ui
   const msg = getQueryMessage();
   if (msg) showAlert(alertBox, decodeURIComponent(msg), "warning");
 
-  // Role-based redirect
+
   async function redirectToRoleDashboard() {
     const token = getToken();
     const decoded = decodeJwt(token);
@@ -97,7 +97,7 @@
     }
   }
 
-  // Form submit
+
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
     clearAlert(alertBox);

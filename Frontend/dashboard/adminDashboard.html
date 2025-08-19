@@ -9,8 +9,6 @@
 <body class="bg-light">
   <div class="container py-4">
     <h2 class="mb-4">Admin Dashboard</h2>
-
-    <!-- Pending Doctors Table -->
     <div class="card shadow-sm">
       <div class="card-header">
         <h5 class="mb-0">Doctors Pending Approval</h5>
@@ -75,7 +73,7 @@
         tableBody.appendChild(row);
       });
 
-      // attach event listeners to action buttons
+      // event listeners to approve and subnit
       tableBody.querySelectorAll("button").forEach(btn => {
         btn.addEventListener("click", async (e) => {
           const id = e.target.dataset.id;
@@ -89,7 +87,7 @@
               await rejectDoctor(id);
               alert("Doctor rejected");
             }
-            loadPendingDoctors(); // refresh table
+            loadPendingDoctors(); // refreshing table
           } catch (err) {
             handleAuthError(err);
             alert("Error: " + err.message);
@@ -98,7 +96,7 @@
       });
     }
 
-    // initial load
+    // initial loading al the doctros which r pending
     loadPendingDoctors();
   </script>
 </body>

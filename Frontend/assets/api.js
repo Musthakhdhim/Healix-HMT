@@ -16,13 +16,13 @@ export function authHeader() {
   return t ? { "Authorization": `Bearer ${t}` } : {};
 }
 
-// ========== FETCH WRAPPER ==========
+// fetching all url 
 export async function apiFetch(url, options = {}) {
   const isPublic = url.includes("/auth/register") || url.includes("/auth/login") || url.includes("/auth/verify") || url.includes("/auth/resend");
 
   const headers = {
     "Content-Type": "application/json",
-    ...(isPublic ? {} : authHeader()),  // do not attach token for public endpoints
+    ...(isPublic ? {} : authHeader()),  
     ...(options.headers || {})
   };
 
@@ -46,7 +46,7 @@ export async function apiFetch(url, options = {}) {
   return bodyJson !== null ? bodyJson : bodyText;
 }
 
-// ========== JWT DECODE ==========
+// decoding jwt 
 export function decodeJwt(token) {
   try {
     const base64Url = token.split('.')[1];
@@ -60,7 +60,7 @@ export function decodeJwt(token) {
   }
 }
 
-// ========== AUTH HELPERS ==========
+// checking toen is there
 export function requireAuth() {
   const token = getToken();
   if (!token) {
@@ -78,7 +78,7 @@ export function handleAuthError(e) {
   }
 }
 
-// ========== AUTH API ==========
+// authcontroller apis
 export async function registerUser({ username, email, password, role }) {
   const data = await apiFetch(`${AUTH_BASE}/register`, {
     method: "POST",
@@ -114,7 +114,7 @@ export async function loginUser({ email, password }) {
 export function getPendingEmail() { return localStorage.getItem(EMAIL_KEY) || ""; }
 export function clearPendingEmail() { localStorage.removeItem(EMAIL_KEY); }
 
-// ========== PATIENT API ==========
+// patietn cotroller apis
 const PATIENT_BASE = `${API_BASE}/patient`;
 
 export async function createPatientProfile(patientData) {
@@ -136,7 +136,7 @@ export async function updatePatientProfile(patientData) {
 }
 
 
-// ========== ADMIN API ==========
+// admincontroller apis
 const ADMIN_BASE = `${API_BASE}/admin`;
 
 export async function getPendingDoctors() {
@@ -155,8 +155,16 @@ export async function rejectDoctor(doctorId) {
   });
 }
 
+export async function getAllDoctors(){
+  return apiFetch(`${ADMIN_BASE}/doctors`,{method:"GET"});
+}
 
-// ========== DOCTOR API ==========
+export async function getAllPatients(){
+  return apiFetch(`${ADMIN_BASE}/patients`,{method:"GET"});
+}
+
+
+// doctor controller apis
 const DOCTOR_BASE = `${API_BASE}/doctor`;
 
 export async function createDoctorProfile(doctorData) {

@@ -4,7 +4,6 @@
   <meta charset="utf-8">
   <title>Edit Profile - Healix</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body class="bg-light">
@@ -18,7 +17,6 @@
           <div class="card-body p-4">
             <h3 class="text-center mb-4">My Profile</h3>
 
-            <!-- Profile Display -->
             <div id="profileView" class="mb-3">
               <dl class="row">
                 <dt class="col-sm-4">Full Name</dt>
@@ -49,7 +47,6 @@
     </div>
   </div>
 
-  <!-- Edit Modal -->
   <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content rounded-4 shadow">
@@ -93,7 +90,6 @@
     </div>
   </div>
 
-  <!-- Bootstrap JS -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module">
     import { requireAuth, getPatientProfile, updatePatientProfile, handleAuthError } from "../../assets/api.js";
@@ -107,13 +103,13 @@
 
     let currentProfile = {};
 
-    // Load profile
     async function loadProfile() {
       try {
         const data = await getPatientProfile();
         currentProfile = data;
         document.getElementById("viewFullName").innerText = data.fullName;
         document.getElementById("viewDob").innerText = data.dob;
+
         document.getElementById("viewGender").innerText = data.gender;
         document.getElementById("viewPhonenumber").innerText = data.phonenumber;
         document.getElementById("viewAddress").innerText = data.address;
@@ -123,7 +119,7 @@
       }
     }
 
-    // Open modal with pre-filled data
+    // will poen modal with data's 
     editBtn.addEventListener("click", () => {
       document.getElementById("fullName").value = currentProfile.fullName || "";
       document.getElementById("dob").value = currentProfile.dob || "";
@@ -133,7 +129,7 @@
       editModal.show();
     });
 
-    // Save changes
+
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       e.stopPropagation();
@@ -159,14 +155,15 @@
         await updatePatientProfile(updatedData);
         message.innerHTML = `<div class="alert alert-success">Profile updated successfully!</div>`;
         editModal.hide();
-        loadProfile(); // reload view
+
+        loadProfile(); 
+        
       } catch (err) {
         handleAuthError(err);
         message.innerHTML = `<div class="alert alert-danger">${err.message || "Failed to update profile"}</div>`;
       }
     });
 
-    // Initial load
     loadProfile();
   </script>
 </body>

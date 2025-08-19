@@ -1,19 +1,22 @@
 package com.hmt.healix.Service;
 
+import com.hmt.healix.Entity.Doctor;
 import com.hmt.healix.Entity.Patient;
 import com.hmt.healix.Entity.Role;
 import com.hmt.healix.Entity.Users;
 import com.hmt.healix.Exception.AlreadyApprovedException;
 import com.hmt.healix.Exception.UserIsNotDoctorException;
 import com.hmt.healix.Exception.UserNotFoundException;
+import com.hmt.healix.Repository.DoctorRepository;
 import com.hmt.healix.Repository.PatientRepository;
 import com.hmt.healix.Repository.UserRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
-
 import java.util.List;
 
 @Service
@@ -22,6 +25,7 @@ public class AdminService {
 
     private final UserRepository userRepository;
     private final PatientRepository patientRepository;
+    private final DoctorRepository doctorRepository;
 
     public ResponseEntity<List<Users>> getPatientWithPendingAuthorisation(){
         return ResponseEntity.ok(userRepository.findByRoleAndAdminAuthorised(Role.DOCTOR, false));
@@ -60,7 +64,13 @@ public class AdminService {
     }
 
 
-    public ResponseEntity<List<Patient>> findAllPatients(){
-        return ResponseEntity.ok(patientRepository.findAll());
+    public Page<Patient> getPatients(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return patientRepository.findAll(pageable);
+    }
+
+    public Page<Doctor> getDoctors(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return doctorRepository.findAll(pageable);
     }
 }
