@@ -1,6 +1,8 @@
 package com.hmt.healix.Repository;
 
 import com.hmt.healix.Entity.Doctor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import javax.print.Doc;
@@ -8,4 +10,6 @@ import java.util.Optional;
 
 public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     Optional<Doctor> findByUser_UserId(Long userId);
+
+    Page<Doctor> findAllByUserAdminAuthorisedTrueAndUserEnabledTrue(Pageable pageable);
 }

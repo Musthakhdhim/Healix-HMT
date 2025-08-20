@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<Users, Long> {
     boolean existsByUsername(String username);
 
     List<Users> findByRoleAndAdminAuthorised(Role role, boolean isAdminAuthorised);
+
+
 }

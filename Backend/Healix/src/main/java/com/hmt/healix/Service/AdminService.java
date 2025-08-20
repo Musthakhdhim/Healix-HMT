@@ -63,14 +63,20 @@ public class AdminService {
         return new ResponseEntity<>("you haven't met our requirement to be our doctor",HttpStatus.NON_AUTHORITATIVE_INFORMATION);
     }
 
-
     public Page<Patient> getPatients(int page, int size){
         Pageable pageable = PageRequest.of(page, size);
-        return patientRepository.findAll(pageable);
+        return patientRepository.findAllByUserEnabledTrue(pageable);
     }
 
     public Page<Doctor> getDoctors(int page, int size){
         Pageable pageable = PageRequest.of(page, size);
-        return doctorRepository.findAll(pageable);
+        return doctorRepository.findAllByUserAdminAuthorisedTrueAndUserEnabledTrue(pageable);
     }
+
+    public Page<Patient> searchPatient(String keyword, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return patientRepository.findAllByUserUsernameContainingIgnoreCaseOrUserEmailContainingIgnoreCase(keyword,keyword,pageable);
+    }
+
+
 }

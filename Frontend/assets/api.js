@@ -159,10 +159,27 @@ export async function getAllDoctors(){
   return apiFetch(`${ADMIN_BASE}/doctors`,{method:"GET"});
 }
 
-export async function getAllPatients(){
-  return apiFetch(`${ADMIN_BASE}/patients`,{method:"GET"});
+export async function getAllPatients(page = 0, size = 10) {
+  return apiFetch(`${ADMIN_BASE}/patients?page=${page}&size=${size}`, { method: "GET" });
 }
 
+export async function searchPatient(keyword, page = 0, size = 10) {
+  return apiFetch(`${ADMIN_BASE}/search?keyword=${encodeURIComponent(keyword)}&page=${page}&size=${size}`, {
+    method: "GET"
+  });
+}
+
+
+// export async function getAllPatients(){
+//   return apiFetch(`${ADMIN_BASE}/patients?page=0&size=20`,{method:"GET"});
+
+// }
+
+// export async function searchPatient(keyword, page = 0, size = 20) {
+//   return apiFetch(`${ADMIN_BASE}/search?keyword=${encodeURIComponent(keyword)}&page=${page}&size=${size}`, {
+//     method: "GET"
+//   });
+// }
 
 // doctor controller apis
 const DOCTOR_BASE = `${API_BASE}/doctor`;

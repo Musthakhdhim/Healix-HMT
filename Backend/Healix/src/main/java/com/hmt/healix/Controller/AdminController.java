@@ -7,6 +7,9 @@ import com.hmt.healix.Entity.Users;
 import com.hmt.healix.Service.AdminService;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -49,5 +52,15 @@ public class AdminController {
     ){
         return adminService.getDoctors(page, size);
     }
-    
+
+    @GetMapping("/search")
+    public Page<Patient> searchPatients(
+            @RequestParam String keyword,
+//            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "15") int size
+            ){
+
+        return adminService.searchPatient(keyword, page, size);
+    }
 }
