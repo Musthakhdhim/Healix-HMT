@@ -63,4 +63,10 @@ public class AdminController {
 
         return adminService.searchPatient(keyword, page, size);
     }
+
+    @PutMapping("/patients/{patientId}/toggle-lock")
+    public ResponseEntity<?> toggleBlockPatient(@PathVariable long patientId) {
+        adminService.toggleAccountLocking(patientId);
+        return ResponseEntity.ok().build();
+    }
 }

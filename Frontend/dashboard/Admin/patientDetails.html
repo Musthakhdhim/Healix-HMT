@@ -63,7 +63,7 @@
   </div>
 
   <script type="module">
-    import { getAllPatients, requireAuth, searchPatient, handleAuthError } from "../../assets/api.js";
+    import { togglePatientLock,getAllPatients, requireAuth, searchPatient, handleAuthError } from "../../assets/api.js";
 
     requireAuth();
 
@@ -106,7 +106,6 @@
       }
     }
 
-    // Render patient cards
     function renderPatients(patients) {
       patientsContainer.innerHTML = "";
 
@@ -120,21 +119,61 @@
         card.className = "col-md-4";
         card.innerHTML = `
           <div class="card patient-card shadow-sm h-100">
-            <div class="card-body">
+            <div class="card-body d-flex flex-column">
               <h5 class="card-title">${patient.fullName || "N/A"}</h5>
-              <p class="card-text">
+              <p class="card-text flex-grow-1">
                 <strong>Email:</strong> ${patient.user?.email || "N/A"}<br>
                 <strong>Phone:</strong> ${patient.phonenumber || "N/A"}<br>
                 <strong>Gender:</strong> ${patient.gender || "N/A"}<br>
                 <strong>DOB:</strong> ${patient.dob || "N/A"}<br>
-                <strong>Address:</strong> ${patient.address || "N/A"}
+                <strong>Address:</strong> ${patient.address || "N/A"}<br>
+                <strong>Status:</strong> 
+                  ${patient.user?.accountLocked 
+                    ? '<span class="badge bg-danger">Locked</span>' 
+                    : '<span class="badge bg-success">Active</span>'}
               </p>
+              <button 
+                class="btn ${patient.user?.accountLocked ? "btn-success" : "btn-danger"} mt-auto"
+                onclick="toggleLock(${patient.user?.userId}, ${patient.user?.accountLocked})">
+                ${patient.user?.accountLocked ? "Unlock" : "Lock"}
+              </button>
             </div>
           </div>
         `;
         patientsContainer.appendChild(card);
       });
     }
+
+
+    // Render patient cards
+    // function renderPatients(patients) {
+    //   patientsContainer.innerHTML = "";
+
+    //   if (!patients || patients.length === 0) {
+    //     patientsContainer.innerHTML = `<p class="text-muted text-center">No patients found.</p>`;
+    //     return;
+    //   }
+
+    //   patients.forEach(patient => {
+    //     const card = document.createElement("div");
+    //     card.className = "col-md-4";
+    //     card.innerHTML = `
+    //       <div class="card patient-card shadow-sm h-100">
+    //         <div class="card-body">
+    //           <h5 class="card-title">${patient.fullName || "N/A"}</h5>
+    //           <p class="card-text">
+    //             <strong>Email:</strong> ${patient.user?.email || "N/A"}<br>
+    //             <strong>Phone:</strong> ${patient.phonenumber || "N/A"}<br>
+    //             <strong>Gender:</strong> ${patient.gender || "N/A"}<br>
+    //             <strong>DOB:</strong> ${patient.dob || "N/A"}<br>
+    //             <strong>Address:</strong> ${patient.address || "N/A"}
+    //           </p>
+    //         </div>
+    //       </div>
+    //     `;
+    //     patientsContainer.appendChild(card);
+    //   });
+    // }
 
     // Render pagination controls
     function renderPagination(pageData, isSearch = false) {
@@ -158,6 +197,22 @@
       }
     }
 
+    async function toggleLock(userId, isLocked) {
+      try {
+        await togglePatientLock(userId);
+        alert(`User ${isLocked ? "unlocked" : "locked"} successfully`);
+        // reload current page
+        if (currentKeyword) {
+          filterUsers(currentPage);
+        } else {
+          loadPatients(currentPage);
+        }
+      } catch (error) {
+        console.error("Error toggling lock", error);
+        alert("Failed to update user status");
+      }
+    }
+    window.toggleLock = toggleLock;
     // Expose search to window (so inline HTML works)
     window.filterUsers = filterUsers;
 

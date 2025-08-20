@@ -169,6 +169,12 @@ export async function searchPatient(keyword, page = 0, size = 10) {
   });
 }
 
+export async function togglePatientLock(userId) {
+  return apiFetch(`${ADMIN_BASE}/patients/${userId}/toggle-lock`, {
+    method: "PUT"
+  });
+}
+
 
 // export async function getAllPatients(){
 //   return apiFetch(`${ADMIN_BASE}/patients?page=0&size=20`,{method:"GET"});

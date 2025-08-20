@@ -32,6 +32,8 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private boolean adminAuthorised; // default false for doctors
 
+    @Column(nullable = false)
+    private boolean accountLocked = false;
 
     private boolean enabled;
 
@@ -65,7 +67,7 @@ public class Users implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return !accountLocked;
     }
 
     @Override

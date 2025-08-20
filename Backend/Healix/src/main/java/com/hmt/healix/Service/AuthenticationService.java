@@ -60,6 +60,10 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsersNotFoundException("user not found"));
 
+        if(!user.isAccountNonLocked()){
+            throw new AccountLockedException("your account has been locked by admin, please contact administrator");
+        }
+
         if (!user.isEnabled()) {
             throw new AccountNotVerifiedException("account is not yet verified, please verify your account");
         }

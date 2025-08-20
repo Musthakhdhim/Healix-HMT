@@ -17,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+
+import java.awt.image.ReplicateScaleFilter;
 import java.util.List;
 
 @Service
@@ -78,5 +80,15 @@ public class AdminService {
         return patientRepository.findAllByUserUsernameContainingIgnoreCaseOrUserEmailContainingIgnoreCase(keyword,keyword,pageable);
     }
 
+
+    public ResponseEntity<?> toggleAccountLocking(Long patientId){
+        Patient patient=patientRepository.findById(Math.toIntExact(patientId)).orElseThrow();
+
+        Users user=userRepository.findById(patient.getUser().getUserId()).orElseThrow();
+
+        user.setAccountLocked(!user.isAccountLocked());
+        userRepository.save(user);
+        return ResponseEntity.ok().build();
+    }
 
 }

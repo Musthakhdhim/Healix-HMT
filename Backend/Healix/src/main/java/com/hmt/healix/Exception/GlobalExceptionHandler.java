@@ -68,4 +68,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleAlreadyApprovedException(AlreadyApprovedException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(AccountLockedException.class)
+    public ResponseEntity<?> handleAccountLockedException(AccountLockedException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.CONFLICT);
+    }
 }
