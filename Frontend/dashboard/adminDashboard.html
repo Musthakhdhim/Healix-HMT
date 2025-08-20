@@ -42,7 +42,7 @@
         <li><a class="dropdown-item" href="Doctor/editDoctorProfile.html">Profile</a></li>
         <li><a class="dropdown-item" href="#">My Appointments</a></li>
         <li><a class="dropdown-item" href="">change password</a></li>
-        <!-- <li><a class="dropdown-item" href="#" onclick="">Logout</a></li> -->
+        <li><a class="dropdown-item" href="#" id="logout-btn">Logout</a></li>
       </ul>
     </div>
 
@@ -77,9 +77,14 @@
   </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
   <script type="module">
-    import { requireAuth, handleAuthError, getPendingDoctors, approveDoctor, rejectDoctor } from "../assets/api.js";
+    import { requireAuth, handleAuthError, getPendingDoctors, approveDoctor, rejectDoctor, logoutUser } from "../assets/api.js";
 
     requireAuth();
+
+    document.getElementById("logout-btn").addEventListener("click", (e) => {
+      e.preventDefault();
+      logoutUser();
+    });
 
     const tableBody = document.getElementById("pendingDoctorsTable");
 

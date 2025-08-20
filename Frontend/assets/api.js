@@ -46,6 +46,7 @@ export async function apiFetch(url, options = {}) {
   return bodyJson !== null ? bodyJson : bodyText;
 }
 
+
 // decoding jwt 
 export function decodeJwt(token) {
   try {
@@ -77,6 +78,31 @@ export function handleAuthError(e) {
     throw e;
   }
 }
+
+//logging out
+// export async function logoutUser() {
+//   try {
+//     await apiFetch(`${AUTH_BASE}/logout`, {
+//       method: "POST"
+//     });
+//   } catch (e) {
+//     // Even if the API fails, we still clear local storage
+//     console.warn("Logout API failed, clearing token anyway:", e);
+//   } finally {
+//     clearToken();
+//     clearPendingEmail();
+//     window.location.replace("../index.html?m=You%20have%20logged%20out");
+//   }
+// }
+
+export async function logoutUser() {
+  
+    clearToken();
+    clearPendingEmail();
+    window.location.replace("../index.html?m=You%20have%20logged%20out");
+  
+}
+
 
 // authcontroller apis
 export async function registerUser({ username, email, password, role }) {

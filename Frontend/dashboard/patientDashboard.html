@@ -74,7 +74,7 @@
         <li><a class="dropdown-item" href="#">My Appointments</a></li>
         <li><a class="dropdown-item" href="#">Medical Reports</a></li>
         <li><a class="dropdown-item" href="Patient/changePassword.html">change password</a></li>
-        <!-- <li><a class="dropdown-item" href="#" >Logout</a></li> -->
+        <li><a class="dropdown-item" href="#" id="logout-btn">Logout</a></li>
       </ul>
     </div>
 
@@ -132,8 +132,12 @@
   </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script type="module">
-  import { requireAuth} from "../assets/api.js";
+  import { requireAuth,logoutUser } from "../assets/api.js";
     requireAuth();
+    document.getElementById("logout-btn").addEventListener("click", (e) => {
+      e.preventDefault();
+      logoutUser();
+    });
 </script>
 </body>
 </html>
