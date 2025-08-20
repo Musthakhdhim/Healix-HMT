@@ -12,4 +12,6 @@ public interface DoctorRepository extends JpaRepository<Doctor, Integer> {
     Optional<Doctor> findByUser_UserId(Long userId);
 
     Page<Doctor> findAllByUserAdminAuthorisedTrueAndUserEnabledTrue(Pageable pageable);
+
+    Page<Doctor> findAllByUserUsernameContainingIgnoreCaseOrUserEmailContainingIgnoreCase(String username,String email, Pageable pageable);
 }

@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.awt.image.ReplicateScaleFilter;
 import java.util.List;
 
 @Service
@@ -80,15 +79,38 @@ public class AdminService {
         return patientRepository.findAllByUserUsernameContainingIgnoreCaseOrUserEmailContainingIgnoreCase(keyword,keyword,pageable);
     }
 
+    public Page<Doctor> searchDoctor(String keyword, int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        return doctorRepository.findAllByUserUsernameContainingIgnoreCaseOrUserEmailContainingIgnoreCase(keyword, keyword, pageable);
 
-    public ResponseEntity<?> toggleAccountLocking(Long patientId){
-        Patient patient=patientRepository.findById(Math.toIntExact(patientId)).orElseThrow();
+    }
 
-        Users user=userRepository.findById(patient.getUser().getUserId()).orElseThrow();
+    public void toggleAccountLockPatient(Long userId){
+//        Patient patient=patientRepository.findById(Math.toIntExact(patientId)).orElseThrow(
+//                ()-> {throw new UserNotFoundException("Patient not found");}
+//        );
+
+        Users user=userRepository.findById(userId).orElseThrow();
 
         user.setAccountLocked(!user.isAccountLocked());
         userRepository.save(user);
-        return ResponseEntity.ok().build();
+        ResponseEntity.ok().build();
     }
+
+
+    public void toggleAccountLockDoctor(Long userId){
+
+//        Doctor doctor=doctorRepository.findById(Math.toIntExact(doctorId)).orElseThrow(
+//                ()-> new UserNotFoundException("Doctor not found")
+//        );
+        Users user=userRepository.findById(userId).orElseThrow(
+                ()-> new UserNotFoundException("User not found")
+        );
+        System.out.println(user.toString());
+        user.setAccountLocked(!user.isAccountLocked());
+        userRepository.save(user);
+        ResponseEntity.ok().build();
+    }
+
 
 }

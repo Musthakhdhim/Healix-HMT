@@ -155,8 +155,8 @@ export async function rejectDoctor(doctorId) {
   });
 }
 
-export async function getAllDoctors(){
-  return apiFetch(`${ADMIN_BASE}/doctors`,{method:"GET"});
+export async function getAllDoctors(page = 0, size = 10){
+  return apiFetch(`${ADMIN_BASE}/doctors?page=${page}&size=${size}`,{method:"GET"});
 }
 
 export async function getAllPatients(page = 0, size = 10) {
@@ -164,7 +164,7 @@ export async function getAllPatients(page = 0, size = 10) {
 }
 
 export async function searchPatient(keyword, page = 0, size = 10) {
-  return apiFetch(`${ADMIN_BASE}/search?keyword=${encodeURIComponent(keyword)}&page=${page}&size=${size}`, {
+  return apiFetch(`${ADMIN_BASE}/patients/search?keyword=${encodeURIComponent(keyword)}&page=${page}&size=${size}`, {
     method: "GET"
   });
 }
@@ -174,6 +174,19 @@ export async function togglePatientLock(userId) {
     method: "PUT"
   });
 }
+
+export async function toggleDoctorLock(userId) {
+  return apiFetch(`${ADMIN_BASE}/doctors/${userId}/toggle-lock`, {
+    method: "PUT"
+  });
+}
+
+export async function searchDoctor(keyword, page = 0, size = 10) {
+  return apiFetch(`${ADMIN_BASE}/doctors/search?keyword=${encodeURIComponent(keyword)}&page=${page}&size=${size}`, {
+    method: "GET"
+  });
+}
+
 
 
 // export async function getAllPatients(){

@@ -53,7 +53,7 @@ public class AdminController {
         return adminService.getDoctors(page, size);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/patients/search")
     public Page<Patient> searchPatients(
             @RequestParam String keyword,
 //            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.DESC) Pageable pageable
@@ -64,9 +64,26 @@ public class AdminController {
         return adminService.searchPatient(keyword, page, size);
     }
 
-    @PutMapping("/patients/{patientId}/toggle-lock")
-    public ResponseEntity<?> toggleBlockPatient(@PathVariable long patientId) {
-        adminService.toggleAccountLocking(patientId);
+    @GetMapping("/doctors/search")
+    public Page<Doctor> searchDoctors(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "15") int size
+    ){
+        return adminService.searchDoctor(keyword, page, size);
+    }
+
+
+    @PutMapping("/patients/{userId}/toggle-lock")
+    public ResponseEntity<?> toggleBlockPatient(@PathVariable long userId) {
+        adminService.toggleAccountLockPatient(userId);
+        return ResponseEntity.ok().build();
+    }
+
+
+    @PutMapping("/doctors/{userId}/toggle-lock")
+    public ResponseEntity<?> toggleBlockDoctor(@PathVariable long userId) {
+        adminService.toggleAccountLockDoctor(userId);
         return ResponseEntity.ok().build();
     }
 }
