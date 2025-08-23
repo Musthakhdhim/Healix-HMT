@@ -13,6 +13,7 @@ import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -62,6 +63,10 @@ public class AuthenticationService {
 
         if(!user.isAccountNonLocked()){
             throw new AccountLockedException("your account has been locked by admin, please contact administrator");
+        }
+
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+            throw new BadCredentialsException("invalid password");
         }
 
         if (!user.isEnabled()) {

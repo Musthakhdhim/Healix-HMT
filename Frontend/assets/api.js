@@ -161,6 +161,23 @@ export async function updatePatientProfile(patientData) {
   });
 }
 
+export async function getAllDoctorsFromPatient(page = 0, size = 10){
+  return apiFetch(`${PATIENT_BASE}/doctors?page=${page}&size=${size}`,{method:"GET"});
+}
+
+export async function searchDoctorFromPatient(keyword, page = 0, size = 10) {
+  return apiFetch(`${PATIENT_BASE}/doctors/search?keyword=${encodeURIComponent(keyword)}&page=${page}&size=${size}`, {
+    method: "GET"
+  });
+}
+
+export async function getDoctorSlotsForPatient(doctorId) {
+  return apiFetch(`${PATIENT_BASE}/doctors/${doctorId}/slots`, {
+    method: "GET"
+  });
+}
+
+
 
 // admincontroller apis
 const ADMIN_BASE = `${API_BASE}/admin`;
@@ -246,3 +263,14 @@ export async function updateDoctorProfile(doctorData) {
   });
 }
 
+// doctor slot APIs
+export async function createDoctorSlot(slotData) {
+  return apiFetch(`${DOCTOR_BASE}/slots`, {
+    method: "POST",
+    body: JSON.stringify(slotData)
+  });
+}
+
+export async function getDoctorSlots() {
+  return apiFetch(`${DOCTOR_BASE}/slots`, { method: "GET" });
+}

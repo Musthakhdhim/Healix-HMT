@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Slots</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- SweetAlert2 -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <div class="container mt-4">
+
+    <a href="../doctorDashboard.html">
+        <button class="btn btn-primary mx-1 my-3">Go back</button>
+    </a>
+    <h3>My Consultation Slots</h3>
+
+    <!-- Slot Creation Form -->
+    <form id="slotForm" class="card p-3 shadow-sm mb-4">
+      <div class="mb-3">
+        <label for="date" class="form-label">Select Date</label>
+        <input type="date" class="form-control" id="date" required>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label for="availableFrom" class="form-label">Start Time</label>
+          <input type="time" class="form-control" id="availableFrom" required>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label for="availableTo" class="form-label">End Time</label>
+          <input type="time" class="form-control" id="availableTo" required>
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label for="slotDuration" class="form-label">Slot Duration (minutes)</label>
+        <input type="number" class="form-control" id="slotDuration" required min="5" step="5" value="30">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Add Slots</button>
+    </form>
+
+    <!-- Slots List -->
+    <h5>My Slots</h5>
+    <div id="slotsList" class="row"></div>
+  </div>
+
+  <script type="module">
+    import { createDoctorSlot, getDoctorSlots, handleAuthError } from "../../assets/api.js";
+
+    const slotForm = document.getElementById("slotForm");
+    const slotsList = document.getElementById("slotsList");
+
+    // Load existing slots
+    async function loadSlots() {
+      try {
+        const slots = await getDoctorSlots();
+        slotsList.innerHTML = "";
+
+        if (!slots || slots.length === 0) {
+          slotsList.innerHTML = "<p class='text-muted'>No slots created yet.</p>";
+          return;
+        }
+
+        slots.forEach(slot => {
+          const col = document.createElement("div");
+          col.className = "col-md-4 mb-3";
+
+          col.innerHTML = `
+            <div class="card shadow-sm h-100">
+              <div class="card-body">
+                <h6 class="card-title">${slot.date}</h6>
+                <p class="card-text">
+                  <strong>Time:</strong> ${slot.startTime} - ${slot.endTime}<br>
+                  <strong>Status:</strong> ${slot.status}
+                </p>
+              </div>
+            </div>
+          `;
+          slotsList.appendChild(col);
+        });
+      } catch (e) {
+        handleAuthError(e);
+      }
+    }
+
+    // Handle slot form submit
+    slotForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const date = document.getElementById("date").value;
+      const availableFrom = document.getElementById("availableFrom").value;
+      const availableTo = document.getElementById("availableTo").value;
+      const slotDurationMinutes = parseInt(document.getElementById("slotDuration").value, 10);
+
+      try {
+        await createDoctorSlot({
+          date,
+          availableFrom,
+          availableTo,
+          slotDurationMinutes
+        });
+
+        slotForm.reset();
+        await loadSlots(); // reload after adding
+
+        // SweetAlert success
+        Swal.fire({
+          icon: 'success',
+          title: 'Slot Created',
+          text: 'Your consultation slot has been successfully created!',
+          confirmButtonColor: '#0d6efd'
+        });
+
+      } catch (e) {
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: "Failed to create slot: " + e.message,
+          confirmButtonColor: '#dc3545'
+        });
+      }
+    });
+
+    // Initial load
+    loadSlots();
+  </script>
+</body>
+</html>

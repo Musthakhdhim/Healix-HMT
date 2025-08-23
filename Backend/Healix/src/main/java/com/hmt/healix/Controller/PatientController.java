@@ -3,13 +3,18 @@ package com.hmt.healix.Controller;
 
 import com.hmt.healix.Dtos.RegisterPatientDto;
 import com.hmt.healix.Dtos.UpdatePatientDto;
+import com.hmt.healix.Entity.Doctor;
+import com.hmt.healix.Entity.DoctorSlot;
 import com.hmt.healix.Entity.Patient;
 import com.hmt.healix.Service.JwtService;
 import com.hmt.healix.Service.PatientService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -47,4 +52,28 @@ public class PatientController {
         return ResponseEntity.ok().build();
 
     }
+
+    @GetMapping("/doctors")
+    public Page<Doctor> getDoctors(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "15") int size
+    ){
+        return patientService.getDoctorsFromPatients(page, size);
+    }
+
+    @GetMapping("/doctors/search")
+    public Page<Doctor> searchDoctors(
+            @RequestParam String keyword,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "15") int size
+    ){
+        return patientService.searchDoctorFromPatients(keyword, page, size);
+    }
+
+
+    @GetMapping("/doctors/{doctorId}/slots")
+    public ResponseEntity<List<DoctorSlot>> getDoctorSlotsForPatient(@PathVariable Long doctorId) {
+        return ResponseEntity.ok(patientService.getDoctorSlotsForPatient(doctorId));
+    }
+
 }
