@@ -5,6 +5,7 @@ import com.hmt.healix.Entity.Doctor;
 import com.hmt.healix.Entity.DoctorSlot;
 import com.hmt.healix.Entity.SlotStatus;
 import com.hmt.healix.Exception.AlreadyExistsException;
+import com.hmt.healix.Exception.SlotExpiredException;
 import com.hmt.healix.Exception.UsersNotFoundException;
 import com.hmt.healix.Repository.DoctorRepository;
 import com.hmt.healix.Repository.DoctorSlotRepository;
@@ -13,6 +14,7 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,18 @@ public class DoctorSlotService {
 
     @Transactional
     public List<DoctorSlot> createSlots(SlotCreationRequest request,HttpServletRequest httpServletRequest) {
+
+        if(request.getDate().isBefore(LocalDate.now())) {
+            throw new SlotExpiredException("provided date is expired");
+        }
+
+        if(request.getAvailableFrom().isBefore(LocalTime.now())){
+            throw new SlotExpiredException("provided time is expired");
+        }
+
+        if(request.getAvailableTo().isBefore(request.getAvailableFrom())){
+            throw new SlotExpiredException("available to is before from time");
+        }
 
         String token= jwtService.getTokenFromAuthorization(httpServletRequest);
         String email= jwtService.extractEmail(token);
@@ -76,6 +90,10 @@ public class DoctorSlotService {
                 .orElseThrow(()->new UsersNotFoundException("Doctor not found"));
 
 
-        return doctorSlotRepository.findByDoctor_DoctorId(doctor.getDoctorId());
+        return doctorSlotRepository.findAvailableFutureSlots(
+                doctor.getDoctorId(),
+                LocalDate.now(),
+                LocalTime.now()
+        );
     }
 }

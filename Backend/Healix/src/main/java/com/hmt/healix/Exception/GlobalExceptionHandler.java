@@ -79,4 +79,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleBadCredentialsException(BadCredentialsException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(SlotExpiredException.class)
+    public ResponseEntity<?> handleSlotExpiredException(SlotExpiredException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.GATEWAY_TIMEOUT);
+    }
 }

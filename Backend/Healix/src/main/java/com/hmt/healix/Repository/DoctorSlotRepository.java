@@ -20,4 +20,11 @@ public interface DoctorSlotRepository extends JpaRepository<DoctorSlot, Integer>
     boolean existsOverlappingSlot(Long doctorId, LocalDate date, LocalTime startTime, LocalTime endTime);
 
     List<DoctorSlot> findByDoctor_DoctorId(Long doctorId);
+
+    @Query("SELECT s FROM DoctorSlot s " +
+            "WHERE s.doctor.doctorId = :doctorId " +
+            "AND s.status = 'AVAILABLE' " +
+            "AND (s.date > :today OR (s.date = :today AND s.endTime > :now))")
+    List<DoctorSlot> findAvailableFutureSlots(Long doctorId, LocalDate today, LocalTime now);
+
 }

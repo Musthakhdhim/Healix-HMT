@@ -16,4 +16,5 @@ public interface PatientRepository extends JpaRepository<Patient, Integer> {
     Page<Patient> findAllByUserUsernameContainingIgnoreCaseOrUserEmailContainingIgnoreCase(String username, String email, Pageable pageable);
 
 
+    Optional<Patient> findByUserEmail(String email);
 }

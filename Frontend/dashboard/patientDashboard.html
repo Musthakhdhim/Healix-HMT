@@ -71,8 +71,8 @@
       </a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
         <li><a class="dropdown-item" href="Patient/editProfile.html">Profile</a></li>
-        <li><a class="dropdown-item" href="#">My Appointments</a></li>
-        <li><a class="dropdown-item" href="#">Medical Reports</a></li>
+        <li><a class="dropdown-item" href="Patient/appointments.html">My Appointments</a></li>
+        <!-- <li><a class="dropdown-item" href="#">Medical Reports</a></li> -->
         <li><a class="dropdown-item" href="Patient/changePassword.html">change password</a></li>
         <li><a class="dropdown-item" href="#" id="logout-btn">Logout</a></li>
       </ul>
@@ -119,7 +119,9 @@
             <img src="../assets/images/appointment.png" width="40" class="me-2" alt="Calendar Icon">
             <div>
               <div class="fw-bold">Upcoming Appointment</div>
-              <small class="text-muted">Check now</small>
+              <a href="Patient/appointments.html">
+                <small class="text-muted">Check now</small>
+              </a>
             </div>
           </div>
           <div class="fs-4 fw-bold">&gt;</div>

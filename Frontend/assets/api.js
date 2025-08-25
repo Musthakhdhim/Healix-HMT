@@ -274,3 +274,29 @@ export async function createDoctorSlot(slotData) {
 export async function getDoctorSlots() {
   return apiFetch(`${DOCTOR_BASE}/slots`, { method: "GET" });
 }
+
+
+// appointment booking API
+export async function createAppointment(doctorId, slotId) {
+  return apiFetch(`${PATIENT_BASE}/doctor/appointment`, {
+    method: "POST",
+    body: JSON.stringify({
+      doctorId,
+      slotId
+    })
+  });
+}
+
+// fetch all patient appointments
+export async function getPatientAppointments() {
+  return apiFetch(`${PATIENT_BASE}/doctor/appointments`, {
+    method: "GET"
+  });
+}
+
+// cancel an appointment
+export async function cancelAppointment(appointmentId) {
+  return apiFetch(`${PATIENT_BASE}/doctor/appointments/${appointmentId}`, {
+    method: "DELETE"
+  });
+}
