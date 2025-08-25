@@ -40,4 +40,14 @@ public class DoctorController {
         return ResponseEntity.ok().body("doctor profile updated successfully");
     }
 
+    @GetMapping("/appointments")
+    public ResponseEntity<?> getAllDoctorAppointment(HttpServletRequest request) {
+        return doctorService.getDoctorAppointments(request);
+    }
+
+    @GetMapping("/patients")
+    public ResponseEntity<?> getAllDoctorPatient(HttpServletRequest request) {
+        return doctorService.getAllDoctorPatients(request);
+    }
+
 }
