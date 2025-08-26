@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/v1/patients/appointment")
+@RequestMapping("/api/v1/patient")
 public class PaymentController {
 
     private PaymentService paymentService;
 
-    @PostMapping("/payment/{appointmentId}")
+    @PostMapping("/appointment/payment/{appointmentId}")
     public ResponseEntity<?> createOrder(@PathVariable Long appointmentId) {
         return paymentService.payForAppointment(appointmentId);
     }

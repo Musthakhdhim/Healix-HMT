@@ -330,3 +330,10 @@ export async function getDoctorAppointments() {
 }
 
 
+//payment
+
+export async function createPaymentOrder(appointmentId) {
+  return apiFetch(`${PATIENT_BASE}/appointment/payment/${appointmentId}`, {
+    method: "POST"
+  });
+}
