@@ -99,11 +99,7 @@
           },
           theme: { color: "#0d6efd" }
         };
-        console.log("name :",booking.patient.fullName);
-        console.log("email :",booking.patient.user?.email);
-        console.log("number :",booking.patient.phonenumber);
         
-
         const rzp = new Razorpay(options);
         rzp.open();
       } catch (error) {

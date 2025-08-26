@@ -47,6 +47,7 @@ public class AppointmentBookingService {
         appointmentBooking.setDoctor(doctor);
         appointmentBooking.setSlot(slot);
         appointmentBooking.setStatus(BookingStatus.PENDING);
+//        appointmentBooking.setRazorpayOrderId(razorpayOrder.get("id"));
         appointmentBookingRepository.save(appointmentBooking);
 
         return ResponseEntity.ok(appointmentBooking);
@@ -81,6 +82,15 @@ public class AppointmentBookingService {
         appointmentBookingRepository.delete(booking);
 
         return ResponseEntity.ok("Appointment cancelled successfully");
+    }
+
+    public ResponseEntity<?> getAppointmentById(Long appointmentId) {
+        AppointmentBooking appointment=appointmentBookingRepository.findById(appointmentId)
+                .orElseThrow(
+                        ()->new UsersNotFoundException("appotinment not founr")
+                );
+
+        return ResponseEntity.ok(appointment);
     }
 
 }

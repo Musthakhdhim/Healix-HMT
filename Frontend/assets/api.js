@@ -308,6 +308,12 @@ export async function createAppointment(doctorId, slotId) {
   });
 }
 
+export async function getAppointmentById(appointmentId) {
+  return apiFetch(`${PATIENT_BASE}/doctor/appointments/${appointmentId}`,{
+    method:"GET"
+  })
+}
+
 // fetch all patient appointments
 export async function getPatientAppointments() {
   return apiFetch(`${PATIENT_BASE}/doctor/appointments`, {

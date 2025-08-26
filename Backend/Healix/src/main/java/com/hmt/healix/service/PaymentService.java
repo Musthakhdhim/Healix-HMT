@@ -42,6 +42,8 @@ public class PaymentService {
 
             Order order=razorpay.orders.create(orderRequest);
 
+            booking.setRazorpayOrderId(order.get("id"));
+            bookingRepository.save(booking);
             return ResponseEntity.ok(order.toString());
         }
         catch(Exception ex){

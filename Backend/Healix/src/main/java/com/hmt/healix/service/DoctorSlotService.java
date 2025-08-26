@@ -33,7 +33,7 @@ public class DoctorSlotService {
             throw new SlotExpiredException("provided date is expired");
         }
 
-        if(request.getAvailableFrom().isBefore(LocalTime.now())){
+        if(request.getDate().isEqual(LocalDate.now()) &&request.getAvailableFrom().isBefore(LocalTime.now())){
             throw new SlotExpiredException("provided time is expired");
         }
 

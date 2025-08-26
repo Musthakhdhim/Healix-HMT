@@ -35,4 +35,8 @@ public class AppointmentBooking {
     private BookingStatus status; // PENDING, CONFIRMED, CANCELLED
 
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    private String razorpayOrderId;     // to link payment with booking
+    private String razorpayPaymentId;   // set after success
+    private String razorpaySignature;   // verify authenticity
 }

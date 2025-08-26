@@ -48,9 +48,10 @@
         table.innerHTML = data.map((appt, idx) => `
           <tr>
             <td>${idx + 1}</td>
-            <td>${appt.doctor?.doctorName || "Dr."}</td>
+            <td>${appt.patient?.fullName || "Dr."}</td>
             <td>${appt.slot.date || "N/A"}</td>
-            <td>${appt.slot.startTime || "N/A"}</td>
+            <td>${appt.slot.startTime || "N/A"} to ${appt.slot.endTime || "N/A"}</td>
+
             <td>${appt.status || "Booked"}</td>
            
           </tr>

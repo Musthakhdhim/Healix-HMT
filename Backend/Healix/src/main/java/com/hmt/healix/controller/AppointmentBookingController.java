@@ -22,6 +22,7 @@ public class AppointmentBookingController {
         return appointmentBookingService.appointmentBooking(appointmentBookingRequest, httpServletRequest);
     }
 
+
     @GetMapping("/appointments")
     public ResponseEntity<?> getAllPatientAppointments(HttpServletRequest httpServletRequest) {
         return appointmentBookingService.getPatientAppointmentBooking(httpServletRequest);
@@ -30,6 +31,11 @@ public class AppointmentBookingController {
     @DeleteMapping("/appointments/{appointmentId}")
     public ResponseEntity<?> cancelAppointment(@PathVariable Long appointmentId, HttpServletRequest httpServletRequest) {
         return appointmentBookingService.cancelAppointment(appointmentId, httpServletRequest);
+    }
+
+    @GetMapping("/appointments/{appointmentId}")
+    public ResponseEntity<?> getAppointmentById(@PathVariable Long appointmentId) {
+        return appointmentBookingService.getAppointmentById(appointmentId);
     }
 
 }
