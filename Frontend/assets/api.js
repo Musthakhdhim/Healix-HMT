@@ -103,6 +103,11 @@ export async function logoutUser() {
   
 }
 
+export async function logoutChangePassword(){
+  clearToken();
+    clearPendingEmail();
+    window.location.replace("../../index.html?m=You%20have%20logged%20out");
+}
 
 // authcontroller apis
 export async function registerUser({ username, email, password, role }) {
@@ -177,6 +182,15 @@ export async function getDoctorSlotsForPatient(doctorId) {
   });
 }
 
+//change password
+export async function changePassword(oldPassword, newPassword, confirmPassword) {
+  return apiFetch(`${PATIENT_BASE}/change-password`, {
+    method: "PUT",
+    body: JSON.stringify({ oldPassword, newPassword, confirmPassword }),
+  });
+}
+
+// ===================================================================================
 
 
 // admincontroller apis
@@ -314,3 +328,5 @@ export async function getDoctorAppointments() {
     method: "GET"
   });
 }
+
+

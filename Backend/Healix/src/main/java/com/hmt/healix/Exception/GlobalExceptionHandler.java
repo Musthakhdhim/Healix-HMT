@@ -84,4 +84,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<?> handleSlotExpiredException(SlotExpiredException ex){
         return new ResponseEntity<>(ex.getMessage(), HttpStatus.GATEWAY_TIMEOUT);
     }
+
+    @ExceptionHandler(PasswordNotMatchingException.class)
+    public ResponseEntity<?> handlePasswordNotMatchingException(PasswordNotMatchingException ex){
+        return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }

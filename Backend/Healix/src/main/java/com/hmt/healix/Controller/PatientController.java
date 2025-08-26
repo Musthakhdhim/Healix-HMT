@@ -1,6 +1,7 @@
 package com.hmt.healix.Controller;
 
 
+import com.hmt.healix.Dtos.ChangePasswordDto;
 import com.hmt.healix.Dtos.RegisterPatientDto;
 import com.hmt.healix.Dtos.UpdatePatientDto;
 import com.hmt.healix.Entity.Doctor;
@@ -9,6 +10,7 @@ import com.hmt.healix.Entity.Patient;
 import com.hmt.healix.Service.JwtService;
 import com.hmt.healix.Service.PatientService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
@@ -52,6 +54,12 @@ public class PatientController {
         return ResponseEntity.ok().build();
 
     }
+
+    @PutMapping("/change-password")
+    public ResponseEntity<?> changePassword(HttpServletRequest request,@Valid @RequestBody ChangePasswordDto changePasswordDto){
+        return patientService.changePassword(request,changePasswordDto);
+    }
+
 
     @GetMapping("/doctors")
     public Page<Doctor> getDoctors(
