@@ -90,10 +90,17 @@ public class DoctorSlotService {
                 .orElseThrow(()->new UsersNotFoundException("Doctor not found"));
 
 
-        return doctorSlotRepository.findAvailableFutureSlots(
+//        return doctorSlotRepository.findAvailableFutureSlots(
+//                doctor.getDoctorId(),
+//                LocalDate.now(),
+//                LocalTime.now()
+//        );
+
+        return doctorSlotRepository.findAvailableOrCancelledFutureSlots(
                 doctor.getDoctorId(),
                 LocalDate.now(),
-                LocalTime.now()
+                LocalTime.now(),
+                List.of(SlotStatus.AVAILABLE, SlotStatus.CANCELLED)
         );
     }
 }

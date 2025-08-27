@@ -3,10 +3,7 @@ package com.hmt.healix.service;
 import com.hmt.healix.dtos.ChangePasswordDto;
 import com.hmt.healix.dtos.RegisterPatientDto;
 import com.hmt.healix.dtos.UpdatePatientDto;
-import com.hmt.healix.entity.Doctor;
-import com.hmt.healix.entity.DoctorSlot;
-import com.hmt.healix.entity.Patient;
-import com.hmt.healix.entity.Users;
+import com.hmt.healix.entity.*;
 import com.hmt.healix.exception.AlreadyExistsException;
 import com.hmt.healix.exception.PasswordNotMatchingException;
 import com.hmt.healix.exception.UsersNotFoundException;
@@ -131,10 +128,17 @@ public class PatientService {
     }
 
     public List<DoctorSlot> getDoctorSlotsForPatient(Long doctorId) {
-        return doctorSlotRepository.findAvailableFutureSlots(
+//        return doctorSlotRepository.findAvailableFutureSlots(
+//                doctorId,
+//                LocalDate.now(),
+//                LocalTime.now()
+//        );
+
+        return doctorSlotRepository.findAvailableOrCancelledFutureSlots(
                 doctorId,
                 LocalDate.now(),
-                LocalTime.now()
+                LocalTime.now(),
+                List.of(SlotStatus.AVAILABLE, SlotStatus.CANCELLED)
         );
     }
 

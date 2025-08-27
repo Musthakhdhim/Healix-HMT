@@ -1,6 +1,7 @@
 package com.hmt.healix.repository;
 
 import com.hmt.healix.entity.DoctorSlot;
+import com.hmt.healix.entity.SlotStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -22,8 +23,18 @@ public interface DoctorSlotRepository extends JpaRepository<DoctorSlot, Integer>
 
     @Query("SELECT s FROM DoctorSlot s " +
             "WHERE s.doctor.doctorId = :doctorId " +
-            "AND s.status = 'AVAILABLE' " +
+            "AND s.status IN (:statuses) " +
             "AND (s.date > :today OR (s.date = :today AND s.endTime > :now))")
-    List<DoctorSlot> findAvailableFutureSlots(Long doctorId, LocalDate today, LocalTime now);
+    List<DoctorSlot> findAvailableOrCancelledFutureSlots(Long doctorId,
+                                                         LocalDate today,
+                                                         LocalTime now,
+                                                         List<SlotStatus> statuses);
+
+
+//    @Query("SELECT s FROM DoctorSlot s " +
+//            "WHERE s.doctor.doctorId = :doctorId " +
+//            "AND s.status = 'AVAILABLE' " +
+//            "AND (s.date > :today OR (s.date = :today AND s.endTime > :now))")
+//    List<DoctorSlot> findAvailableFutureSlots(Long doctorId, LocalDate today, LocalTime now);
 
 }
