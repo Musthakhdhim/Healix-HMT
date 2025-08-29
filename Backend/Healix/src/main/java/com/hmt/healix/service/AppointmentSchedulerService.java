@@ -23,14 +23,12 @@ public class AppointmentSchedulerService {
 
     @Scheduled(initialDelay = 0, fixedRate = 300000)
     public void cancelUnpaidAppointments() {
-        System.out.println("Running scheduler at " + LocalDateTime.now());
 
         LocalDateTime cutoff = LocalDateTime.now().minusMinutes(15);
 
         List<AppointmentBooking> expiredBookings =
                 bookingRepository.findByStatusAndCreatedAtBefore(BookingStatus.PENDING, cutoff);
 
-        System.out.println("Expired bookings found: " + expiredBookings.size());
 
         for (AppointmentBooking booking : expiredBookings) {
             booking.setStatus(BookingStatus.CANCELLED);
@@ -40,13 +38,41 @@ public class AppointmentSchedulerService {
             doctorSlotRepository.save(slot);
             bookingRepository.save(booking);
 
-            System.out.println("Cancelled booking " + booking.getAppointmentId() +
-                    " and freed slot " + slot.getSlotId());
         }
     }
+}
 
 
-    // runs every 5 minutes
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// runs every 5 minutes
 //    @Scheduled(fixedRate = 300000)
 //    public void cancelUnpaidAppointments() {
 //        LocalDateTime cutoff = LocalDateTime.now().minusMinutes(15);
@@ -62,5 +88,9 @@ public class AppointmentSchedulerService {
 //            bookingRepository.save(booking);
 //        }
 //    }
-}
 
+//System.out.println("Cancelled booking " + booking.getAppointmentId() +
+//        " and freed slot " + slot.getSlotId());
+
+//System.out.println("Running scheduler at " + LocalDateTime.now());
+//        System.out.println("Expired bookings found: " + expiredBookings.size());

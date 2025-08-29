@@ -48,33 +48,64 @@
           table.innerHTML = `<tr><td colspan="6" class="text-center">No appointments found</td></tr>`;
           return;
         }
-
         table.innerHTML = data.map((appt, idx) => {
-          let actionButtons = `
+        let actionButtons = "";
+
+    
+        if (appt.status !== "CANCELLED") {
+          actionButtons += `
             <button class="btn btn-danger btn-sm" onclick="cancelAppt(${appt.appointmentId})">
               Cancel
             </button>
           `;
+        }
 
-          if (appt.status === "PENDING") {
-            actionButtons += `
-              <button class="btn btn-success btn-sm ms-2" onclick="payForAppt(${appt.appointmentId})">
-                Pay
-              </button>
-            `;
-          }
-
-          return `
-            <tr>
-              <td>${idx + 1}</td>
-              <td>${appt.doctor?.doctorName || "Dr."}</td>
-              <td>${appt.slot.date || "N/A"}</td>
-              <td>${appt.slot.startTime || "N/A"}</td>
-              <td>${appt.status || "Booked"}</td>
-              <td>${actionButtons}</td>
-            </tr>
+        if (appt.status === "PENDING") {
+          actionButtons += `
+            <button class="btn btn-success btn-sm ms-2" onclick="payForAppt(${appt.appointmentId})">
+              Pay
+            </button>
           `;
-        }).join("");
+        }
+
+        return `
+          <tr>
+            <td>${idx + 1}</td>
+            <td>${appt.doctor?.doctorName || "Dr."}</td>
+            <td>${appt.slot.date || "N/A"}</td>
+            <td>${appt.slot.startTime || "N/A"}</td>
+            <td>${appt.status || "Booked"}</td>
+            <td>${actionButtons || "-"}</td>
+          </tr>
+        `;
+      }).join("");
+
+        // table.innerHTML = data.map((appt, idx) => {
+        //   let actionButtons = `
+        //     <button class="btn btn-danger btn-sm" onclick="cancelAppt(${appt.appointmentId})">
+        //       Cancel
+        //     </button>
+        //   `;
+
+        //   if (appt.status === "PENDING") {
+        //     actionButtons += `
+        //       <button class="btn btn-success btn-sm ms-2" onclick="payForAppt(${appt.appointmentId})">
+        //         Pay
+        //       </button>
+        //     `;
+        //   }
+
+        //   return `
+        //     <tr>
+        //       <td>${idx + 1}</td>
+        //       <td>${appt.doctor?.doctorName || "Dr."}</td>
+        //       <td>${appt.slot.date || "N/A"}</td>
+        //       <td>${appt.slot.startTime || "N/A"}</td>
+        //       <td>${appt.status || "Booked"}</td>
+        //       <td>${actionButtons}</td>
+        //     </tr>
+        //   `;
+        // }).join("");
       } catch (e) {
         handleAuthError(e);
       }
@@ -109,7 +140,7 @@
         const booking =await getAppointmentById(appointmentId);
 
         const options = {
-          key: "rzp_test_R9qbDrcsXCHB62", // replace with your Razorpay Key
+          key: "rzp_test_R9qbDrcsXCHB62", 
           amount: order.amount,
           currency: order.currency,
           name: "Healix - Appointment Payment",

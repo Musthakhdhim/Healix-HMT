@@ -33,12 +33,6 @@ public class PatientController {
         return ResponseEntity.ok().build();
     }
 
-//    @PostMapping
-//    public ResponseEntity<?> addPatient(HttpServletRequest request, @RequestBody Patient patient) {
-//        String token=jwtService.getTokenFromAuthorization(request);
-//        patientService.savePatient(token, patient);
-//        return ResponseEntity.ok().build();
-//    }
 
     @GetMapping
     public ResponseEntity<Patient> getPatient(HttpServletRequest request) {
@@ -85,3 +79,33 @@ public class PatientController {
     }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//    @PostMapping
+//    public ResponseEntity<?> addPatient(HttpServletRequest request, @RequestBody Patient patient) {
+//        String token=jwtService.getTokenFromAuthorization(request);
+//        patientService.savePatient(token, patient);
+//        return ResponseEntity.ok().build();
+//    }

@@ -24,9 +24,9 @@
         <li class="nav-item px-3">
           <a class="nav-link fw-bold" href="Admin/doctorDetails.html">Doctor Details</a>
         </li>
-        <li class="nav-item px-3">
+        <!-- <li class="nav-item px-3">
           <a class="nav-link fw-bold" href="#">My consultation</a>
-        </li>
+        </li> -->
       </ul>
        <ul>
         <li class="nav-item px-3 list-unstyled">
@@ -41,7 +41,7 @@
       </a>
       <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileDropdown">
         <li><a class="dropdown-item" href="Doctor/editDoctorProfile.html">Profile</a></li>
-        <li><a class="dropdown-item" href="#">My Appointments</a></li>
+        <!-- <li><a class="dropdown-item" href="#">My Appointments</a></li> -->
         <li><a class="dropdown-item" href="">change password</a></li>
         <li><a class="dropdown-item" href="#" id="logout-btn">Logout</a></li>
       </ul>
@@ -120,7 +120,6 @@
         tableBody.appendChild(row);
       });
 
-      // event listeners to approve and subnit
       tableBody.querySelectorAll("button").forEach(btn => {
         btn.addEventListener("click", async (e) => {
           const id = e.target.dataset.id;
@@ -129,7 +128,6 @@
           try {
             if (action === "approve") {
               await approveDoctor(id);
-              // alert("Doctor approved");
               Swal.fire({
                     icon:'success',
                     title:'success',
@@ -138,7 +136,6 @@
                 })
             } else {
               await rejectDoctor(id);
-              // alert("Doctor rejected");
               Swal.fire({
                     icon:'error',
                     title:'falied',
@@ -146,10 +143,9 @@
                     onfirmButtonColor: '#dc3545'
                 })
             }
-            loadPendingDoctors(); // refreshing table
+            loadPendingDoctors(); 
           } catch (err) {
             handleAuthError(err);
-            // alert("Error: " + err.message);
             Swal.fire({
                     icon:'error',
                     title:'falied',
@@ -161,7 +157,6 @@
       });
     }
 
-    // initial loading al the doctros which r pending
     loadPendingDoctors();
   </script>
 </body>

@@ -79,21 +79,6 @@ export function handleAuthError(e) {
   }
 }
 
-//logging out
-// export async function logoutUser() {
-//   try {
-//     await apiFetch(`${AUTH_BASE}/logout`, {
-//       method: "POST"
-//     });
-//   } catch (e) {
-//     // Even if the API fails, we still clear local storage
-//     console.warn("Logout API failed, clearing token anyway:", e);
-//   } finally {
-//     clearToken();
-//     clearPendingEmail();
-//     window.location.replace("../index.html?m=You%20have%20logged%20out");
-//   }
-// }
 
 export async function logoutUser() {
   
@@ -190,7 +175,6 @@ export async function changePassword(oldPassword, newPassword, confirmPassword) 
   });
 }
 
-// ===================================================================================
 
 
 // admincontroller apis
@@ -340,6 +324,25 @@ export async function getDoctorAppointments() {
 
 export async function createPaymentOrder(appointmentId) {
   return apiFetch(`${PATIENT_BASE}/appointment/payment/${appointmentId}`, {
+    method: "POST"
+  });
+}
+
+
+//wallet
+const WALLET_BASE = `${API_BASE}/patient/wallet`;
+
+export async function getWallet() {
+  return apiFetch(`${WALLET_BASE}`, { method: "GET" });
+}
+
+export async function getWalletTransactions() {
+  return apiFetch(`${WALLET_BASE}/transactions`, { method: "GET" });
+}
+
+// amount in rupees (integer)
+export async function createWalletTopupOrder(amount) {
+  return apiFetch(`${WALLET_BASE}/topup/create-order?amount=${amount}`, {
     method: "POST"
   });
 }

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Wallet</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+  <a href="../patientDashboard.html">
+    <button class="btn btn-primary mx-3 my-3">Go back</button>
+  </a>
+
+  <div class="container py-4">
+    <div class="row">
+      <div class="col-lg-5">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h4 class="card-title mb-3">Wallet Balance</h4>
+            <h2 id="balance" class="display-6">₹0</h2>
+
+            <hr/>
+            <label class="form-label">Add Money (₹)</label>
+            <input id="amount" type="number" min="1" class="form-control" placeholder="Enter amount"/>
+            <button id="btnAdd" class="btn btn-success mt-3">Add Money</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-7 mt-4 mt-lg-0">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Recent Transactions</h5>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th>When</th>
+                    <th>Type</th>
+                    <th>Amount</th>
+                    <th>Ref</th>
+                    <th>Description</th>
+                  </tr>
+                </thead>
+                <tbody id="txnTable">
+                  <tr><td colspan="5" class="text-center">Loading...</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <p class="text-muted small mb-0">
+              Payments are processed by Razorpay. Wallet top-ups appear here after payment succeeds.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script type="module">
+import { getWallet, getWalletTransactions, createWalletTopupOrder } from "../../assets/api.js";
+
+const RAZORPAY_KEY = "rzp_test_R9qbDrcsXCHB62"; 
+
+async function loadWallet() {
+  const w = await getWallet();
+  document.getElementById("balance").innerText = "₹" + Number(w.balance).toFixed(2);
+}
+
+async function loadTxns() {
+  const txns = await getWalletTransactions();
+  const tbody = document.getElementById("txnTable");
+  if (!txns || txns.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" class="text-center">No transactions</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = txns.map(t => `
+    <tr>
+      <td>${new Date(t.createdAt).toLocaleString()}</td>
+      <td>${t.type}</td>
+      <td>₹${Number(t.amount).toFixed(2)}</td>
+      <td>${t.reference || "-"}</td>
+      <td>${t.description || "-"}</td>
+    </tr>
+  `).join("");
+}
+
+document.getElementById("btnAdd").addEventListener("click", async () => {
+  const amt = parseInt(document.getElementById("amount").value, 10);
+  if (!amt || amt <= 0) {
+    Swal.fire({ icon: "error", title: "Invalid amount" });
+    return;
+  }
+  try {
+    const order = await createWalletTopupOrder(amt);
+
+    const options = {
+      key: RAZORPAY_KEY,
+      amount: order.amount,
+      currency: order.currency,
+      name: "Healix Wallet",
+      description: "Wallet Top-up",
+      order_id: order.id,
+      handler: async function() {
+        await Swal.fire({ icon: "success", title: "Payment Successful" });
+        await loadWallet();
+        await loadTxns();
+      },
+      theme: { color: "#0d6efd" }
+    };
+    const rzp = new Razorpay(options);
+    rzp.open();
+  } catch (e) {
+    Swal.fire({ icon: "error", title: "Payment Failed", text: e.message || "Try again later" });
+  }
+});
+
+await loadWallet();
+await loadTxns();
+</script>
+</body>
+</html>
