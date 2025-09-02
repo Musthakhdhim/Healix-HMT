@@ -113,75 +113,135 @@
     //   }
     // }
 
-    async function bookSlot(doctorId, slotId) {
-    if (!confirm("Confirm booking this slot?")) return;
+  //   async function bookSlot(doctorId, slotId) {
+  //   if (!confirm("Confirm booking this slot?")) return;
 
-    try {
-      const booking = await createAppointment(doctorId, slotId);
-      console.log("Appointment response:", booking);
+  //   try {
+  //     const booking = await createAppointment(doctorId, slotId);
+  //     console.log("Appointment response:", booking);
 
-      if (typeof booking === "string" && booking.includes("wallet")) {
-        Swal.fire({
-          icon: "success",
-          title: "Appointment Confirmed 🎉",
-          text: "Your appointment has been booked using wallet balance.",
-          confirmButtonColor: "#0d6efd"
-        });
-        return;
-      }
+  //     if (typeof booking === "string" && booking.includes("wallet")) {
+  //       Swal.fire({
+  //         icon: "success",
+  //         title: "Appointment Confirmed 🎉",
+  //         text: "Your appointment has been booked using wallet balance.",
+  //         confirmButtonColor: "#0d6efd"
+  //       });
+  //       return;
+  //     }
 
-      if (typeof booking === "string" && booking.includes("insufficient")) {
-        Swal.fire({
-          icon: "warning",
-          title: "Insufficient Balance",
-          text: "Your wallet balance is too low. Please pay using Razorpay.",
-          confirmButtonColor: "#f0ad4e"
-        });
-      }
+  //     if (typeof booking === "string" && booking.includes("insufficient")) {
+  //       Swal.fire({
+  //         icon: "warning",
+  //         title: "Insufficient Balance",
+  //         text: "Your wallet balance is too low. Please pay using Razorpay.",
+  //         confirmButtonColor: "#f0ad4e"
+  //       });
+  //     }
 
-      if (booking.appointmentId) {
-        const order = await createPaymentOrder(booking.appointmentId);
-        console.log("Payment order:", order);
+  //     if (booking.appointmentId) {
+  //       const order = await createPaymentOrder(booking.appointmentId);
+  //       console.log("Payment order:", order);
 
-        const options = {
-          key: "rzp_test_R9qbDrcsXCHB62",
-          amount: order.amount,
-          currency: order.currency,
-          name: "Healix",
-          description: "Doctor Appointment Payment",
-          order_id: order.id,
-          handler: function (response) {
-            console.log("Payment success:", response);
-            Swal.fire({
-              icon: "success",
-              title: "Payment Successful 🎉",
-              text: "Your appointment has been confirmed.",
-              confirmButtonColor: "#0d6efd"
-            });
-          },
-          prefill: {
-            name: booking.patient?.fullName,
-            email: booking.patient?.user?.email,
-            contact: booking.patient?.phonenumber
-          },
-          theme: { color: "#0d6efd" }
-        };
+  //       const options = {
+  //         key: "rzp_test_R9qbDrcsXCHB62",
+  //         amount: order.amount,
+  //         currency: order.currency,
+  //         name: "Healix",
+  //         description: "Doctor Appointment Payment",
+  //         order_id: order.id,
+  //         handler: function (response) {
+  //           console.log("Payment success:", response);
+  //           Swal.fire({
+  //             icon: "success",
+  //             title: "Payment Successful 🎉",
+  //             text: "Your appointment has been confirmed.",
+  //             confirmButtonColor: "#0d6efd"
+  //           });
+  //         },
+  //         prefill: {
+  //           name: booking.patient?.fullName,
+  //           email: booking.patient?.user?.email,
+  //           contact: booking.patient?.phonenumber
+  //         },
+  //         theme: { color: "#0d6efd" }
+  //       };
 
-        const rzp = new Razorpay(options);
-        rzp.open();
-        loadDoctorSlots()
-      }
+  //       const rzp = new Razorpay(options);
+  //       rzp.open();
+  //       loadDoctorSlots()
+  //     }
 
-    } catch (error) {
-      console.error("Booking/payment failed", error);
+  //   } catch (error) {
+  //     console.error("Booking/payment failed", error);
+  //     Swal.fire({
+  //       icon: "error",
+  //       title: "Failed",
+  //       text: "Could not book or pay for appointment: " + error.message,
+  //       confirmButtonColor: "#dc3545"
+  //     });
+  //   }
+  // }
+
+  async function bookSlot(doctorId, slotId) {
+  if (!confirm("Confirm booking this slot?")) return;
+
+  try {
+    const booking = await createAppointment(doctorId, slotId);
+    console.log("Appointment response:", booking);
+
+    if (booking.status === "WALLET_CONFIRMED") {
       Swal.fire({
-        icon: "error",
-        title: "Failed",
-        text: "Could not book or pay for appointment: " + error.message,
-        confirmButtonColor: "#dc3545"
+        icon: "success",
+        title: "Appointment Confirmed 🎉",
+        text: booking.message,
+        confirmButtonColor: "#0d6efd"
       });
+      await loadDoctorSlots();
+      return;
     }
+
+    if (booking.status === "PAYMENT_REQUIRED") {
+      const order = await createPaymentOrder(booking.appointmentId);
+
+      const options = {
+        key: "rzp_test_R9qbDrcsXCHB62",
+        amount: order.amount,
+        currency: order.currency,
+        name: "Healix",
+        description: "Doctor Appointment Payment",
+        order_id: order.id,
+        handler: function (response) {
+          Swal.fire({
+            icon: "success",
+            title: "Payment Successful 🎉",
+            text: "Your appointment has been confirmed.",
+            confirmButtonColor: "#0d6efd"
+          });
+          loadDoctorSlots();
+        },
+        prefill: {
+          name: booking.patient?.fullName,
+          email: booking.patient?.user?.email,
+          contact: booking.patient?.phonenumber
+        },
+        theme: { color: "#0d6efd" }
+      };
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+
+  } catch (error) {
+    console.error("Booking/payment failed", error);
+    Swal.fire({
+      icon: "error",
+      title: "Failed",
+      text: "Could not book or pay for appointment: " + error.message,
+      confirmButtonColor: "#dc3545"
+    });
   }
+}
+
     loadDoctorSlots();
   </script>
 </body>

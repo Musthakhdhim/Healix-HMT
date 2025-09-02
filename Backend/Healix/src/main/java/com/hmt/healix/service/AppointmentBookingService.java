@@ -44,9 +44,14 @@ public class AppointmentBookingService {
         Wallet wallet = walletRepository.findByPatient(patient)
                 .orElseThrow(() -> new RuntimeException("Wallet not found"));
 
+
         if (wallet.getBalance().compareTo(consultationFee) >= 0) {
             wallet.setBalance(wallet.getBalance().subtract(consultationFee));
             walletRepository.save(wallet);
+
+            walletService.debit(patient, consultationFee,
+                    "APPT_BOOK_" + slot.getSlotId(),
+                    "Consultation fee for appointment #" + slot.getSlotId());
 
             slot.setStatus(SlotStatus.BOOKED);
             doctorSlotRepository.save(slot);
@@ -56,16 +61,15 @@ public class AppointmentBookingService {
             appointmentBooking.setDoctor(doctor);
             appointmentBooking.setSlot(slot);
             appointmentBooking.setStatus(BookingStatus.CONFIRMED);
-
             appointmentBookingRepository.save(appointmentBooking);
 
-//            return ResponseEntity.ok("Appointment booked using wallet");
             return ResponseEntity.ok(Map.of(
                     "status", "WALLET_CONFIRMED",
                     "appointmentId", appointmentBooking.getAppointmentId(),
                     "message", "Appointment booked using wallet"
             ));
-        } else {
+        }
+        else {
             slot.setStatus(SlotStatus.PENDING);
             doctorSlotRepository.save(slot);
 
@@ -220,3 +224,25 @@ public class AppointmentBookingService {
 //
 //        return ResponseEntity.ok("Appointment cancelled successfully");
 //    }
+//        if (wallet.getBalance().compareTo(consultationFee) >= 0) {
+//            wallet.setBalance(wallet.getBalance().subtract(consultationFee));
+//            walletRepository.save(wallet);
+//
+//            slot.setStatus(SlotStatus.BOOKED);
+//            doctorSlotRepository.save(slot);
+//
+//            AppointmentBooking appointmentBooking = new AppointmentBooking();
+//            appointmentBooking.setPatient(patient);
+//            appointmentBooking.setDoctor(doctor);
+//            appointmentBooking.setSlot(slot);
+//            appointmentBooking.setStatus(BookingStatus.CONFIRMED);
+//
+//            appointmentBookingRepository.save(appointmentBooking);
+//
+////            return ResponseEntity.ok("Appointment booked using wallet");
+//            return ResponseEntity.ok(Map.of(
+//                    "status", "WALLET_CONFIRMED",
+//                    "appointmentId", appointmentBooking.getAppointmentId(),
+//                    "message", "Appointment booked using wallet"
+//            ));
+//        }
