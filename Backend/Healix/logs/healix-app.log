@@ -1,0 +1,361 @@
+2025-09-04T09:21:50.975+05:30 ERROR 19444 --- [Healix] [main] o.s.b.d.LoggingFailureAnalysisReporter   : 
+
+***************************
+APPLICATION FAILED TO START
+***************************
+
+Description:
+
+Failed to bind properties under 'logging.level.com.hmt.healix' to org.springframework.boot.logging.LogLevel:
+
+    Property: logging.level.com.hmt.healix
+    Value: "DEBUG   # your package"
+    Origin: class path resource [application.properties] - 33:30
+    Reason: failed to convert java.lang.String to org.springframework.boot.logging.LogLevel (caused by java.lang.IllegalArgumentException: No enum constant org.springframework.boot.logging.LogLevel.DEBUG   # your package)
+
+Action:
+
+Update your application's configuration. The following values are valid:
+
+    DEBUG
+    ERROR
+    FATAL
+    INFO
+    OFF
+    TRACE
+    WARN
+
+2025-09-04T09:22:52.402+05:30  INFO 24744 --- [Healix] [main] com.hmt.healix.HealixApplication         : Starting HealixApplication using Java 24 with PID 24744 (C:\Users\pmust\Desktop\Healix\Backend\Healix\target\classes started by pmust in C:\Users\pmust\Desktop\Healix\Backend\Healix)
+2025-09-04T09:22:52.405+05:30 DEBUG 24744 --- [Healix] [main] com.hmt.healix.HealixApplication         : Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-09-04T09:22:52.406+05:30  INFO 24744 --- [Healix] [main] com.hmt.healix.HealixApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-09-04T09:22:53.290+05:30  INFO 24744 --- [Healix] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-04T09:22:53.401+05:30  INFO 24744 --- [Healix] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 99 ms. Found 7 JPA repository interfaces.
+2025-09-04T09:22:53.963+05:30  INFO 24744 --- [Healix] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-04T09:22:53.983+05:30  INFO 24744 --- [Healix] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-04T09:22:53.985+05:30  INFO 24744 --- [Healix] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-04T09:22:54.123+05:30  INFO 24744 --- [Healix] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-04T09:22:54.124+05:30  INFO 24744 --- [Healix] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1661 ms
+2025-09-04T09:22:54.296+05:30  INFO 24744 --- [Healix] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-04T09:22:54.412+05:30  INFO 24744 --- [Healix] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-09-04T09:22:54.451+05:30  INFO 24744 --- [Healix] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-04T09:22:54.908+05:30  INFO 24744 --- [Healix] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-04T09:22:54.968+05:30  INFO 24744 --- [Healix] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-09-04T09:22:55.508+05:30  INFO 24744 --- [Healix] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@22c29aa8
+2025-09-04T09:22:55.512+05:30  INFO 24744 --- [Healix] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-09-04T09:22:55.596+05:30  WARN 24744 --- [Healix] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-09-04T09:22:55.597+05:30  WARN 24744 --- [Healix] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-09-04T09:22:55.620+05:30  INFO 24744 --- [Healix] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-04T09:22:56.802+05:30  INFO 24744 --- [Healix] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-04T09:22:57.025+05:30  INFO 24744 --- [Healix] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T09:22:57.452+05:30 DEBUG 24744 --- [Healix] [main] c.h.h.filters.JwtAuthenticationFilter    : Filter 'jwtAuthenticationFilter' configured for use
+2025-09-04T09:22:57.452+05:30 DEBUG 24744 --- [Healix] [main] c.hmt.healix.filters.AuthRedirectFilter  : Filter 'authRedirectFilter' configured for use
+2025-09-04T09:22:57.587+05:30  INFO 24744 --- [Healix] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-09-04T09:22:58.938+05:30  INFO 24744 --- [Healix] [main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-09-04T09:22:58.939+05:30  WARN 24744 --- [Healix] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-09-04T09:22:59.069+05:30  WARN 24744 --- [Healix] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-04T09:22:59.390+05:30 DEBUG 24744 --- [Healix] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, AuthRedirectFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-09-04T09:22:59.640+05:30  INFO 24744 --- [Healix] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-04T09:22:59.648+05:30  INFO 24744 --- [Healix] [main] com.hmt.healix.HealixApplication         : Started HealixApplication in 7.715 seconds (process running for 8.315)
+2025-09-04T09:29:09.236+05:30  INFO 24744 --- [Healix] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-04T09:29:09.242+05:30  INFO 24744 --- [Healix] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-04T09:29:09.248+05:30  INFO 24744 --- [Healix] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T09:29:09.251+05:30  INFO 24744 --- [Healix] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-09-04T09:29:09.257+05:30  INFO 24744 --- [Healix] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-09-04T09:29:13.410+05:30  INFO 11824 --- [Healix] [main] com.hmt.healix.HealixApplication         : Starting HealixApplication using Java 24 with PID 11824 (C:\Users\pmust\Desktop\Healix\Backend\Healix\target\classes started by pmust in C:\Users\pmust\Desktop\Healix\Backend\Healix)
+2025-09-04T09:29:13.412+05:30 DEBUG 11824 --- [Healix] [main] com.hmt.healix.HealixApplication         : Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-09-04T09:29:13.412+05:30  INFO 11824 --- [Healix] [main] com.hmt.healix.HealixApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-09-04T09:29:14.077+05:30  INFO 11824 --- [Healix] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-04T09:29:14.169+05:30  INFO 11824 --- [Healix] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 81 ms. Found 7 JPA repository interfaces.
+2025-09-04T09:29:14.761+05:30  INFO 11824 --- [Healix] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-04T09:29:14.778+05:30  INFO 11824 --- [Healix] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-04T09:29:14.778+05:30  INFO 11824 --- [Healix] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-04T09:29:14.840+05:30  INFO 11824 --- [Healix] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-04T09:29:14.841+05:30  INFO 11824 --- [Healix] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1388 ms
+2025-09-04T09:29:14.976+05:30  INFO 11824 --- [Healix] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-04T09:29:15.028+05:30  INFO 11824 --- [Healix] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-09-04T09:29:15.073+05:30  INFO 11824 --- [Healix] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-04T09:29:15.391+05:30  INFO 11824 --- [Healix] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-04T09:29:15.440+05:30  INFO 11824 --- [Healix] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-09-04T09:29:15.800+05:30  INFO 11824 --- [Healix] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@718f3088
+2025-09-04T09:29:15.802+05:30  INFO 11824 --- [Healix] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-09-04T09:29:15.851+05:30  WARN 11824 --- [Healix] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-09-04T09:29:15.852+05:30  WARN 11824 --- [Healix] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-09-04T09:29:15.866+05:30  INFO 11824 --- [Healix] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-04T09:29:16.911+05:30  INFO 11824 --- [Healix] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-04T09:29:17.081+05:30  INFO 11824 --- [Healix] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T09:29:17.397+05:30 DEBUG 11824 --- [Healix] [main] c.h.h.filters.JwtAuthenticationFilter    : Filter 'jwtAuthenticationFilter' configured for use
+2025-09-04T09:29:17.398+05:30 DEBUG 11824 --- [Healix] [main] c.hmt.healix.filters.AuthRedirectFilter  : Filter 'authRedirectFilter' configured for use
+2025-09-04T09:29:17.499+05:30  INFO 11824 --- [Healix] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-09-04T09:29:18.788+05:30  INFO 11824 --- [Healix] [main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-09-04T09:29:18.788+05:30  WARN 11824 --- [Healix] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-09-04T09:29:18.872+05:30  WARN 11824 --- [Healix] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-04T09:29:19.132+05:30 DEBUG 11824 --- [Healix] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, AuthRedirectFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-09-04T09:29:19.383+05:30  INFO 11824 --- [Healix] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-04T09:29:19.394+05:30  INFO 11824 --- [Healix] [main] com.hmt.healix.HealixApplication         : Started HealixApplication in 6.382 seconds (process running for 6.898)
+2025-09-04T09:29:54.864+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-04T09:29:54.880+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-04T09:29:54.880+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 0 ms
+2025-09-04T09:29:54.932+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/auth/login
+2025-09-04T09:29:55.023+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/auth/login
+2025-09-04T09:29:55.039+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-09-04T09:29:55.055+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/auth/login
+2025-09-04T09:30:01.333+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/auth/login
+2025-09-04T09:30:01.339+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/auth/login
+2025-09-04T09:30:01.344+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-09-04T09:30:01.345+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/auth/login
+2025-09-04T09:30:01.984+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] o.s.s.a.dao.DaoAuthenticationProvider    : Authenticated user
+2025-09-04T09:30:02.321+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient
+2025-09-04T09:30:02.329+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient
+2025-09-04T09:30:02.473+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient
+2025-09-04T09:30:04.968+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:30:04.975+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:30:04.989+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:30:05.059+05:30  WARN 11824 --- [Healix] [http-nio-8080-exec-8] ration$PageModule$WarningLoggingModifier : Serializing PageImpl instances as-is is not supported, meaning that there is no guarantee about the stability of the resulting JSON structure!
+	For a stable JSON structure, please use Spring Data's PagedModel (globally via @EnableSpringDataWebSupport(pageSerializationMode = VIA_DTO))
+	or Spring HATEOAS and Spring Data's PagedResourcesAssembler as documented in https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables.
+
+2025-09-04T09:30:06.444+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctors/1/slots
+2025-09-04T09:30:06.457+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctors/1/slots
+2025-09-04T09:30:06.479+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctors/1/slots
+2025-09-04T09:30:09.038+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctor/appointment
+2025-09-04T09:30:09.042+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/patient/doctor/appointment
+2025-09-04T09:30:09.060+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/patient/doctor/appointment
+2025-09-04T09:30:09.060+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-9] c.h.h.service.AppointmentBookingService  : Starting appointment booking: doctorId=1, slotId=38
+2025-09-04T09:30:09.060+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] c.h.h.service.AppointmentBookingService  : Extracted email from token: pmusthakhdhim@gmail.com
+2025-09-04T09:30:09.076+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-9] c.h.h.service.AppointmentBookingService  : Patient found: Musthakhdhim P
+2025-09-04T09:30:09.143+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-9] c.h.h.service.AppointmentBookingService  : Doctor found: Arjun K
+2025-09-04T09:30:09.159+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-9] c.h.h.service.AppointmentBookingService  : Slot retrieved: 38 on 2025-09-11
+2025-09-04T09:30:09.159+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] c.h.h.service.AppointmentBookingService  : Consultation fee: 200
+2025-09-04T09:30:09.178+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] c.h.h.service.AppointmentBookingService  : Wallet balance for patient Musthakhdhim P: 100.00
+2025-09-04T09:30:09.178+05:30  WARN 11824 --- [Healix] [http-nio-8080-exec-9] c.h.h.service.AppointmentBookingService  : Insufficient balance. Marking slot 38 as PENDING
+2025-09-04T09:30:09.357+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-9] c.h.h.service.AppointmentBookingService  : Appointment PENDING with ID 41
+2025-09-04T09:30:09.371+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/appointment/payment/41
+2025-09-04T09:30:09.378+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/patient/appointment/payment/41
+2025-09-04T09:30:09.396+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/patient/appointment/payment/41
+2025-09-04T09:30:48.054+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctors/1/slots
+2025-09-04T09:30:48.063+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctors/1/slots
+2025-09-04T09:30:48.084+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctors/1/slots
+2025-09-04T09:31:14.542+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:31:14.550+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:31:14.562+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:31:19.992+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctor/appointments
+2025-09-04T09:31:19.997+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctor/appointments
+2025-09-04T09:31:20.015+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctor/appointments
+2025-09-04T09:31:20.017+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-3] c.h.h.service.AppointmentBookingService  : Fetching patient appointment bookings.
+2025-09-04T09:31:20.020+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-3] c.h.h.service.AppointmentBookingService  : Extracted email: pmusthakhdhim@gmail.com
+2025-09-04T09:31:20.038+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-3] c.h.h.service.AppointmentBookingService  : Returning bookings for patient Musthakhdhim P
+2025-09-04T09:31:35.352+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:31:35.359+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:31:35.374+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:31:36.731+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctors/1/slots
+2025-09-04T09:31:36.741+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctors/1/slots
+2025-09-04T09:31:36.761+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctors/1/slots
+2025-09-04T09:31:54.694+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctor/appointment
+2025-09-04T09:31:54.694+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/patient/doctor/appointment
+2025-09-04T09:31:54.710+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/patient/doctor/appointment
+2025-09-04T09:31:54.710+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-6] c.h.h.service.AppointmentBookingService  : Starting appointment booking: doctorId=1, slotId=39
+2025-09-04T09:31:54.721+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] c.h.h.service.AppointmentBookingService  : Extracted email from token: pmusthakhdhim@gmail.com
+2025-09-04T09:31:54.722+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-6] c.h.h.service.AppointmentBookingService  : Patient found: Musthakhdhim P
+2025-09-04T09:31:54.738+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-6] c.h.h.service.AppointmentBookingService  : Doctor found: Arjun K
+2025-09-04T09:31:54.738+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-6] c.h.h.service.AppointmentBookingService  : Slot retrieved: 39 on 2025-09-11
+2025-09-04T09:31:54.738+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] c.h.h.service.AppointmentBookingService  : Consultation fee: 200
+2025-09-04T09:31:54.755+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] c.h.h.service.AppointmentBookingService  : Wallet balance for patient Musthakhdhim P: 100.00
+2025-09-04T09:31:54.755+05:30  WARN 11824 --- [Healix] [http-nio-8080-exec-6] c.h.h.service.AppointmentBookingService  : Insufficient balance. Marking slot 39 as PENDING
+2025-09-04T09:31:54.788+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-6] c.h.h.service.AppointmentBookingService  : Appointment PENDING with ID 42
+2025-09-04T09:31:54.788+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/appointment/payment/42
+2025-09-04T09:31:54.788+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/patient/appointment/payment/42
+2025-09-04T09:31:54.811+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/patient/appointment/payment/42
+2025-09-04T09:32:33.961+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctors/1/slots
+2025-09-04T09:32:33.968+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctors/1/slots
+2025-09-04T09:32:33.984+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctors/1/slots
+2025-09-04T09:32:37.892+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:32:37.895+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:32:37.901+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-9] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctors?page=0&size=10
+2025-09-04T09:32:41.812+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctor/appointments
+2025-09-04T09:32:41.827+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctor/appointments
+2025-09-04T09:32:41.842+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctor/appointments
+2025-09-04T09:32:41.845+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-5] c.h.h.service.AppointmentBookingService  : Fetching patient appointment bookings.
+2025-09-04T09:32:41.847+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-5] c.h.h.service.AppointmentBookingService  : Extracted email: pmusthakhdhim@gmail.com
+2025-09-04T09:32:41.862+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-5] c.h.h.service.AppointmentBookingService  : Returning bookings for patient Musthakhdhim P
+2025-09-04T09:32:51.250+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-2] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/appointment/payment/42
+2025-09-04T09:32:51.255+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/patient/appointment/payment/42
+2025-09-04T09:32:51.266+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-6] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/patient/appointment/payment/42
+2025-09-04T09:32:51.411+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-7] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctor/appointments/42
+2025-09-04T09:32:51.418+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctor/appointments/42
+2025-09-04T09:32:51.429+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctor/appointments/42
+2025-09-04T09:32:51.432+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-8] c.h.h.service.AppointmentBookingService  : Fetching appointment by ID 42
+2025-09-04T09:32:51.446+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-8] c.h.h.service.AppointmentBookingService  : Appointment details retrieved for ID 42
+2025-09-04T09:33:23.178+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-10] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/patient/doctor/appointments
+2025-09-04T09:33:23.184+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Securing GET /api/v1/patient/doctor/appointments
+2025-09-04T09:33:23.198+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-3] o.s.security.web.FilterChainProxy        : Secured GET /api/v1/patient/doctor/appointments
+2025-09-04T09:33:23.200+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-3] c.h.h.service.AppointmentBookingService  : Fetching patient appointment bookings.
+2025-09-04T09:33:23.202+05:30 DEBUG 11824 --- [Healix] [http-nio-8080-exec-3] c.h.h.service.AppointmentBookingService  : Extracted email: pmusthakhdhim@gmail.com
+2025-09-04T09:33:23.273+05:30  INFO 11824 --- [Healix] [http-nio-8080-exec-3] c.h.h.service.AppointmentBookingService  : Returning bookings for patient Musthakhdhim P
+2025-09-04T09:35:27.881+05:30  INFO 11824 --- [Healix] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-04T09:35:27.886+05:30  INFO 11824 --- [Healix] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-04T09:35:27.891+05:30  INFO 11824 --- [Healix] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T09:35:27.892+05:30  INFO 11824 --- [Healix] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-09-04T09:35:27.897+05:30  INFO 11824 --- [Healix] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-09-04T09:35:32.051+05:30  INFO 23160 --- [Healix] [main] com.hmt.healix.HealixApplication         : Starting HealixApplication using Java 24 with PID 23160 (C:\Users\pmust\Desktop\Healix\Backend\Healix\target\classes started by pmust in C:\Users\pmust\Desktop\Healix\Backend\Healix)
+2025-09-04T09:35:32.053+05:30 DEBUG 23160 --- [Healix] [main] com.hmt.healix.HealixApplication         : Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-09-04T09:35:32.054+05:30  INFO 23160 --- [Healix] [main] com.hmt.healix.HealixApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-09-04T09:35:32.780+05:30  INFO 23160 --- [Healix] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-04T09:35:32.863+05:30  INFO 23160 --- [Healix] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 76 ms. Found 7 JPA repository interfaces.
+2025-09-04T09:35:33.414+05:30  INFO 23160 --- [Healix] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-04T09:35:33.426+05:30  INFO 23160 --- [Healix] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-04T09:35:33.426+05:30  INFO 23160 --- [Healix] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-04T09:35:33.485+05:30  INFO 23160 --- [Healix] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-04T09:35:33.485+05:30  INFO 23160 --- [Healix] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1379 ms
+2025-09-04T09:35:33.656+05:30  INFO 23160 --- [Healix] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-04T09:35:33.713+05:30  INFO 23160 --- [Healix] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-09-04T09:35:33.746+05:30  INFO 23160 --- [Healix] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-04T09:35:33.992+05:30  INFO 23160 --- [Healix] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-04T09:35:34.018+05:30  INFO 23160 --- [Healix] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-09-04T09:35:34.431+05:30  INFO 23160 --- [Healix] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@ca2be53
+2025-09-04T09:35:34.434+05:30  INFO 23160 --- [Healix] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-09-04T09:35:34.504+05:30  WARN 23160 --- [Healix] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-09-04T09:35:34.506+05:30  WARN 23160 --- [Healix] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-09-04T09:35:34.527+05:30  INFO 23160 --- [Healix] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-04T09:35:35.549+05:30  INFO 23160 --- [Healix] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-04T09:35:35.728+05:30  INFO 23160 --- [Healix] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T09:35:36.072+05:30 DEBUG 23160 --- [Healix] [main] c.h.h.filters.JwtAuthenticationFilter    : Filter 'jwtAuthenticationFilter' configured for use
+2025-09-04T09:35:36.073+05:30 DEBUG 23160 --- [Healix] [main] c.hmt.healix.filters.AuthRedirectFilter  : Filter 'authRedirectFilter' configured for use
+2025-09-04T09:35:36.163+05:30  INFO 23160 --- [Healix] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-09-04T09:35:37.436+05:30  INFO 23160 --- [Healix] [main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-09-04T09:35:37.436+05:30  WARN 23160 --- [Healix] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-09-04T09:35:37.527+05:30  WARN 23160 --- [Healix] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-04T09:35:37.806+05:30 DEBUG 23160 --- [Healix] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, AuthRedirectFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-09-04T09:35:38.057+05:30  INFO 23160 --- [Healix] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-04T09:35:38.064+05:30  INFO 23160 --- [Healix] [main] com.hmt.healix.HealixApplication         : Started HealixApplication in 6.451 seconds (process running for 6.961)
+2025-09-04T09:35:43.657+05:30  INFO 23160 --- [Healix] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-04T09:35:43.665+05:30  INFO 23160 --- [Healix] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-04T09:35:43.671+05:30  INFO 23160 --- [Healix] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T09:35:43.673+05:30  INFO 23160 --- [Healix] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-09-04T09:35:43.677+05:30  INFO 23160 --- [Healix] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-09-04T09:35:45.544+05:30  INFO 22076 --- [Healix] [main] com.hmt.healix.HealixApplication         : Starting HealixApplication using Java 24 with PID 22076 (C:\Users\pmust\Desktop\Healix\Backend\Healix\target\classes started by pmust in C:\Users\pmust\Desktop\Healix\Backend\Healix)
+2025-09-04T09:35:45.546+05:30 DEBUG 22076 --- [Healix] [main] com.hmt.healix.HealixApplication         : Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-09-04T09:35:45.547+05:30  INFO 22076 --- [Healix] [main] com.hmt.healix.HealixApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-09-04T09:35:46.194+05:30  INFO 22076 --- [Healix] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-04T09:35:46.276+05:30  INFO 22076 --- [Healix] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 73 ms. Found 7 JPA repository interfaces.
+2025-09-04T09:35:46.850+05:30  INFO 22076 --- [Healix] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-04T09:35:46.862+05:30  INFO 22076 --- [Healix] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-04T09:35:46.863+05:30  INFO 22076 --- [Healix] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-04T09:35:46.931+05:30  INFO 22076 --- [Healix] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-04T09:35:46.932+05:30  INFO 22076 --- [Healix] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1336 ms
+2025-09-04T09:35:47.101+05:30  INFO 22076 --- [Healix] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-04T09:35:47.155+05:30  INFO 22076 --- [Healix] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-09-04T09:35:47.185+05:30  INFO 22076 --- [Healix] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-04T09:35:47.464+05:30  INFO 22076 --- [Healix] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-04T09:35:47.490+05:30  INFO 22076 --- [Healix] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-09-04T09:35:47.933+05:30  INFO 22076 --- [Healix] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@4fc3529
+2025-09-04T09:35:47.936+05:30  INFO 22076 --- [Healix] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-09-04T09:35:48.002+05:30  WARN 22076 --- [Healix] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-09-04T09:35:48.003+05:30  WARN 22076 --- [Healix] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-09-04T09:35:48.027+05:30  INFO 22076 --- [Healix] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-04T09:35:49.127+05:30  INFO 22076 --- [Healix] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-04T09:35:49.302+05:30  INFO 22076 --- [Healix] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T09:35:49.591+05:30 DEBUG 22076 --- [Healix] [main] c.h.h.filters.JwtAuthenticationFilter    : Filter 'jwtAuthenticationFilter' configured for use
+2025-09-04T09:35:49.591+05:30 DEBUG 22076 --- [Healix] [main] c.hmt.healix.filters.AuthRedirectFilter  : Filter 'authRedirectFilter' configured for use
+2025-09-04T09:35:49.724+05:30  INFO 22076 --- [Healix] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-09-04T09:35:51.029+05:30  INFO 22076 --- [Healix] [main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-09-04T09:35:51.030+05:30  WARN 22076 --- [Healix] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-09-04T09:35:51.161+05:30  WARN 22076 --- [Healix] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-04T09:35:51.437+05:30 DEBUG 22076 --- [Healix] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, AuthRedirectFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-09-04T09:35:51.675+05:30  INFO 22076 --- [Healix] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-04T09:35:51.682+05:30  INFO 22076 --- [Healix] [main] com.hmt.healix.HealixApplication         : Started HealixApplication in 6.56 seconds (process running for 7.259)
+2025-09-04T09:36:26.480+05:30  INFO 22076 --- [Healix] [http-nio-8080-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2025-09-04T09:36:26.481+05:30  INFO 22076 --- [Healix] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2025-09-04T09:36:26.486+05:30  INFO 22076 --- [Healix] [http-nio-8080-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2025-09-04T09:36:26.531+05:30 DEBUG 22076 --- [Healix] [http-nio-8080-exec-1] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/auth/register
+2025-09-04T09:36:26.602+05:30 DEBUG 22076 --- [Healix] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/auth/register
+2025-09-04T09:36:26.614+05:30 DEBUG 22076 --- [Healix] [http-nio-8080-exec-8] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-09-04T09:36:26.620+05:30 DEBUG 22076 --- [Healix] [http-nio-8080-exec-8] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/auth/register
+2025-09-04T09:36:27.047+05:30  INFO 22076 --- [Healix] [http-nio-8080-exec-8] c.h.h.service.AuthenticationService      : Attempting to register user with email: ramos@gmail.com
+2025-09-04T09:36:27.293+05:30 DEBUG 22076 --- [Healix] [http-nio-8080-exec-8] c.h.h.service.AuthenticationService      : Generated verification code: 362602
+2025-09-04T09:36:27.294+05:30 DEBUG 22076 --- [Healix] [http-nio-8080-exec-8] c.h.h.service.AuthenticationService      : Generated verification code 362602 for user ramos@gmail.com
+2025-09-04T09:36:27.294+05:30  INFO 22076 --- [Healix] [http-nio-8080-exec-8] c.h.h.service.AuthenticationService      : Sending verification email to ramos@gmail.com
+2025-09-04T09:36:32.477+05:30  INFO 22076 --- [Healix] [http-nio-8080-exec-8] c.h.h.service.AuthenticationService      : Verification email sent to ramos@gmail.com
+2025-09-04T09:36:32.670+05:30  INFO 22076 --- [Healix] [http-nio-8080-exec-8] c.h.h.service.AuthenticationService      : User ramos@gmail.com registered successfully
+2025-09-04T09:37:21.294+05:30 DEBUG 22076 --- [Healix] [http-nio-8080-exec-4] o.s.security.web.FilterChainProxy        : Securing OPTIONS /api/v1/auth/verify
+2025-09-04T09:37:21.299+05:30 DEBUG 22076 --- [Healix] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Securing POST /api/v1/auth/verify
+2025-09-04T09:37:21.300+05:30 DEBUG 22076 --- [Healix] [http-nio-8080-exec-5] o.s.s.w.a.AnonymousAuthenticationFilter  : Set SecurityContextHolder to anonymous SecurityContext
+2025-09-04T09:37:21.300+05:30 DEBUG 22076 --- [Healix] [http-nio-8080-exec-5] o.s.security.web.FilterChainProxy        : Secured POST /api/v1/auth/verify
+2025-09-04T09:37:21.303+05:30  INFO 22076 --- [Healix] [http-nio-8080-exec-5] c.h.h.service.AuthenticationService      : Verifying user with email: ramos@gmail.com
+2025-09-04T09:37:21.313+05:30  INFO 22076 --- [Healix] [http-nio-8080-exec-5] c.h.h.service.AuthenticationService      : Patient ramos@gmail.com auto-approved after verification
+2025-09-04T09:37:21.332+05:30  INFO 22076 --- [Healix] [http-nio-8080-exec-5] c.h.h.service.AuthenticationService      : User ramos@gmail.com verified successfully
+2025-09-04T10:05:16.773+05:30  INFO 22076 --- [Healix] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-04T10:05:16.777+05:30  INFO 22076 --- [Healix] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-04T10:05:16.782+05:30  INFO 22076 --- [Healix] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T10:05:16.784+05:30  INFO 22076 --- [Healix] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-09-04T10:05:16.786+05:30  INFO 22076 --- [Healix] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.
+2025-09-04T10:05:21.784+05:30  INFO 17128 --- [Healix] [main] com.hmt.healix.HealixApplication         : Starting HealixApplication using Java 24 with PID 17128 (C:\Users\pmust\Desktop\Healix\Backend\Healix\target\classes started by pmust in C:\Users\pmust\Desktop\Healix\Backend\Healix)
+2025-09-04T10:05:21.787+05:30 DEBUG 17128 --- [Healix] [main] com.hmt.healix.HealixApplication         : Running with Spring Boot v3.5.3, Spring v6.2.8
+2025-09-04T10:05:21.788+05:30  INFO 17128 --- [Healix] [main] com.hmt.healix.HealixApplication         : No active profile set, falling back to 1 default profile: "default"
+2025-09-04T10:05:22.681+05:30  INFO 17128 --- [Healix] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2025-09-04T10:05:22.868+05:30  INFO 17128 --- [Healix] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 172 ms. Found 7 JPA repository interfaces.
+2025-09-04T10:05:23.484+05:30  INFO 17128 --- [Healix] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat initialized with port 8080 (http)
+2025-09-04T10:05:23.513+05:30  INFO 17128 --- [Healix] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2025-09-04T10:05:23.514+05:30  INFO 17128 --- [Healix] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/10.1.42]
+2025-09-04T10:05:23.582+05:30  INFO 17128 --- [Healix] [main] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring embedded WebApplicationContext
+2025-09-04T10:05:23.582+05:30  INFO 17128 --- [Healix] [main] w.s.c.ServletWebServerApplicationContext : Root WebApplicationContext: initialization completed in 1727 ms
+2025-09-04T10:05:23.734+05:30  INFO 17128 --- [Healix] [main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2025-09-04T10:05:23.784+05:30  INFO 17128 --- [Healix] [main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.6.18.Final
+2025-09-04T10:05:23.837+05:30  INFO 17128 --- [Healix] [main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2025-09-04T10:05:24.130+05:30  INFO 17128 --- [Healix] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2025-09-04T10:05:24.174+05:30  INFO 17128 --- [Healix] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2025-09-04T10:05:24.545+05:30  INFO 17128 --- [Healix] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@389008d1
+2025-09-04T10:05:24.546+05:30  INFO 17128 --- [Healix] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2025-09-04T10:05:24.595+05:30  WARN 17128 --- [Healix] [main] org.hibernate.orm.deprecation            : HHH90000025: MySQL8Dialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2025-09-04T10:05:24.596+05:30  WARN 17128 --- [Healix] [main] org.hibernate.orm.deprecation            : HHH90000026: MySQL8Dialect has been deprecated; use org.hibernate.dialect.MySQLDialect instead
+2025-09-04T10:05:24.618+05:30  INFO 17128 --- [Healix] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [Connecting through datasource 'HikariDataSource (HikariPool-1)']
+	Database driver: undefined/unknown
+	Database version: 8.0
+	Autocommit mode: undefined/unknown
+	Isolation level: undefined/unknown
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2025-09-04T10:05:25.697+05:30  INFO 17128 --- [Healix] [main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2025-09-04T10:05:25.893+05:30  INFO 17128 --- [Healix] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T10:05:26.213+05:30 DEBUG 17128 --- [Healix] [main] c.h.h.filters.JwtAuthenticationFilter    : Filter 'jwtAuthenticationFilter' configured for use
+2025-09-04T10:05:26.214+05:30 DEBUG 17128 --- [Healix] [main] c.hmt.healix.filters.AuthRedirectFilter  : Filter 'authRedirectFilter' configured for use
+2025-09-04T10:05:26.394+05:30  INFO 17128 --- [Healix] [main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2025-09-04T10:05:27.829+05:30  INFO 17128 --- [Healix] [main] eAuthenticationProviderManagerConfigurer : Global AuthenticationManager configured with AuthenticationProvider bean with name authenticationProvider
+2025-09-04T10:05:27.829+05:30  WARN 17128 --- [Healix] [main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with an AuthenticationProvider bean. UserDetailsService beans will not be used by Spring Security for automatically configuring username/password login. Consider removing the AuthenticationProvider bean. Alternatively, consider using the UserDetailsService in a manually instantiated DaoAuthenticationProvider. If the current configuration is intentional, to turn off this warning, increase the logging level of 'org.springframework.security.config.annotation.authentication.configuration.InitializeUserDetailsBeanManagerConfigurer' to ERROR
+2025-09-04T10:05:27.924+05:30  WARN 17128 --- [Healix] [main] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2025-09-04T10:05:28.227+05:30 DEBUG 17128 --- [Healix] [main] o.s.s.web.DefaultSecurityFilterChain     : Will secure any request with filters: DisableEncodeUrlFilter, WebAsyncManagerIntegrationFilter, SecurityContextHolderFilter, HeaderWriterFilter, CorsFilter, LogoutFilter, JwtAuthenticationFilter, AuthRedirectFilter, RequestCacheAwareFilter, SecurityContextHolderAwareRequestFilter, AnonymousAuthenticationFilter, SessionManagementFilter, ExceptionTranslationFilter, AuthorizationFilter
+2025-09-04T10:05:28.482+05:30  INFO 17128 --- [Healix] [main] o.s.b.w.embedded.tomcat.TomcatWebServer  : Tomcat started on port 8080 (http) with context path '/'
+2025-09-04T10:05:28.490+05:30  INFO 17128 --- [Healix] [main] com.hmt.healix.HealixApplication         : Started HealixApplication in 7.245 seconds (process running for 7.941)
+2025-09-04T10:06:34.124+05:30  INFO 17128 --- [Healix] [SpringApplicationShutdownHook] o.s.b.w.e.tomcat.GracefulShutdown        : Commencing graceful shutdown. Waiting for active requests to complete
+2025-09-04T10:06:34.132+05:30  INFO 17128 --- [Healix] [tomcat-shutdown] o.s.b.w.e.tomcat.GracefulShutdown        : Graceful shutdown complete
+2025-09-04T10:06:34.140+05:30  INFO 17128 --- [Healix] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2025-09-04T10:06:34.142+05:30  INFO 17128 --- [Healix] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2025-09-04T10:06:34.147+05:30  INFO 17128 --- [Healix] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

@@ -62,7 +62,293 @@
       }
     }
 
-    // async function bookSlot(doctorId, slotId) {
+  
+
+//   async function bookSlot(doctorId, slotId) {
+//   if (!confirm("Confirm booking this slot?")) return;
+
+//   try {
+//     const booking = await createAppointment(doctorId, slotId);
+//     console.log("Appointment response:", booking);
+
+//     if (booking.status === "WALLET_CONFIRMED") {
+//       Swal.fire({
+//         icon: "success",
+//         title: "Appointment Confirmed 🎉",
+//         text: booking.message,
+//         confirmButtonColor: "#0d6efd"
+//       });
+//       await loadDoctorSlots();
+//       return;
+//     }
+
+//     if (booking.status === "PAYMENT_REQUIRED") {
+//       const order = await createPaymentOrder(booking.appointmentId);
+
+//       const options = {
+//         key: "rzp_test_R9qbDrcsXCHB62",
+//         amount: order.amount,
+//         currency: order.currency,
+//         name: "Healix",
+//         description: "Doctor Appointment Payment",
+//         order_id: order.id,
+//         handler: function (response) {
+//           Swal.fire({
+//             icon: "success",
+//             title: "Payment Successful 🎉",
+//             text: "Your appointment has been confirmed.",
+//             confirmButtonColor: "#0d6efd"
+//           });
+//           loadDoctorSlots();
+//         },
+//         prefill: {
+//           name: booking.patient?.fullName,
+//           email: booking.patient?.user?.email,
+//           contact: booking.patient?.phonenumber
+//         },
+//         theme: { color: "#0d6efd" }
+//       };
+//       const rzp = new Razorpay(options);
+//       rzp.open();
+//     }
+
+//   } catch (error) {
+//     console.error("Booking/payment failed", error);
+//     Swal.fire({
+//       icon: "error",
+//       title: "Failed",
+//       text: "Could not book or pay for appointment: " + error.message,
+//       confirmButtonColor: "#dc3545"
+//     });
+//   }
+// }
+  export  async function bookSlot(doctorId, slotId) {
+  const result = await Swal.fire({
+    title: "Confirm Booking",
+    text: "Do you want to book this slot?",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#0d6efd",
+    cancelButtonColor: "#6c757d",
+    confirmButtonText: "Yes, book it",
+    cancelButtonText: "Cancel"
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    const booking = await createAppointment(doctorId, slotId);
+    console.log("Appointment response:", booking);
+
+    if (booking.status === "WALLET_CONFIRMED") {
+      Swal.fire({
+        icon: "success",
+        title: "Appointment Confirmed 🎉",
+        text: booking.message,
+        confirmButtonColor: "#0d6efd"
+      });
+      await loadDoctorSlots();
+      return;
+    }
+
+    if (booking.status === "PAYMENT_REQUIRED") {
+      const order = await createPaymentOrder(booking.appointmentId);
+
+      const options = {
+        key: "rzp_test_R9qbDrcsXCHB62",
+        amount: order.amount,
+        currency: order.currency,
+        name: "Healix",
+        description: "Doctor Appointment Payment",
+        order_id: order.id,
+        handler: function (response) {
+          Swal.fire({
+            icon: "success",
+            title: "Payment Successful 🎉",
+            text: "Your appointment has been confirmed.",
+            confirmButtonColor: "#0d6efd"
+          });
+          loadDoctorSlots();
+        },
+        prefill: {
+          name: booking.patient?.fullName,
+          email: booking.patient?.user?.email,
+          contact: booking.patient?.phonenumber
+        },
+        theme: { color: "#0d6efd" }
+      };
+      const rzp = new Razorpay(options);
+      rzp.open();
+    }
+
+  } catch (error) {
+    console.error("Booking/payment failed", error);
+    Swal.fire({
+      icon: "error",
+      title: "Failed",
+      text: "Could not book or pay for appointment: " + error.message,
+      confirmButtonColor: "#dc3545"
+    });
+  }
+}
+
+    loadDoctorSlots();
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!--  
+
+
+ // async function bookSlot(doctorId, slotId) {
     //   if (!confirm("Confirm booking this slot?")) return;
 
     //   try {
@@ -183,66 +469,5 @@
   //   }
   // }
 
-  async function bookSlot(doctorId, slotId) {
-  if (!confirm("Confirm booking this slot?")) return;
 
-  try {
-    const booking = await createAppointment(doctorId, slotId);
-    console.log("Appointment response:", booking);
-
-    if (booking.status === "WALLET_CONFIRMED") {
-      Swal.fire({
-        icon: "success",
-        title: "Appointment Confirmed 🎉",
-        text: booking.message,
-        confirmButtonColor: "#0d6efd"
-      });
-      await loadDoctorSlots();
-      return;
-    }
-
-    if (booking.status === "PAYMENT_REQUIRED") {
-      const order = await createPaymentOrder(booking.appointmentId);
-
-      const options = {
-        key: "rzp_test_R9qbDrcsXCHB62",
-        amount: order.amount,
-        currency: order.currency,
-        name: "Healix",
-        description: "Doctor Appointment Payment",
-        order_id: order.id,
-        handler: function (response) {
-          Swal.fire({
-            icon: "success",
-            title: "Payment Successful 🎉",
-            text: "Your appointment has been confirmed.",
-            confirmButtonColor: "#0d6efd"
-          });
-          loadDoctorSlots();
-        },
-        prefill: {
-          name: booking.patient?.fullName,
-          email: booking.patient?.user?.email,
-          contact: booking.patient?.phonenumber
-        },
-        theme: { color: "#0d6efd" }
-      };
-      const rzp = new Razorpay(options);
-      rzp.open();
-    }
-
-  } catch (error) {
-    console.error("Booking/payment failed", error);
-    Swal.fire({
-      icon: "error",
-      title: "Failed",
-      text: "Could not book or pay for appointment: " + error.message,
-      confirmButtonColor: "#dc3545"
-    });
-  }
-}
-
-    loadDoctorSlots();
-  </script>
-</body>
-</html>
+  -->

@@ -11,6 +11,7 @@ import com.hmt.healix.mapper.UserMapper;
 import com.hmt.healix.repository.UserRepository;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -26,6 +27,7 @@ import java.util.Random;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class AuthenticationService {
 
     private final UserRepository userRepository;
@@ -36,13 +38,18 @@ public class AuthenticationService {
     private final EmailService emailService;
 
     public ResponseEntity<?> register(RegisterRequest request) {
+        log.info("Attempting to register user with email: {}", request.getEmail());
+
         if(userRepository.existsByEmail(request.getEmail())){
+            log.error("Registration failed - Email already exists: {}", request.getEmail());
             throw new AlreadyExistsException("Email already exists");
         }
 
         if(userRepository.existsByUsername(request.getUsername())){
+            log.error("Registration failed - Username already exists: {}", request.getUsername());
             throw new AlreadyExistsException("Username already exists");
         }
+
         var user = userMapper.toUser(request);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setRole(request.getRole());
@@ -50,29 +57,42 @@ public class AuthenticationService {
         user.setVerificationCodeExpireAt(LocalDateTime.now().plusMinutes(1));
         user.setEnabled(false);
         user.setAdminAuthorised(false);
-        sendVerificationEmail(user);
 
+        log.debug("Generated verification code {} for user {}", user.getVerificationCode(), user.getEmail());
+
+        sendVerificationEmail(user);
         userRepository.save(user);
+
+        log.info("User {} registered successfully", request.getEmail());
         return ResponseEntity.ok("User registered successfully.");
     }
 
     public AuthenticationResponse login(LoginRequest request) {
+        log.info("Login attempt for email: {}", request.getEmail());
+
         var user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new UsersNotFoundException("user not found"));
+                .orElseThrow(() -> {
+                    log.error("Login failed - user not found: {}", request.getEmail());
+                    return new UsersNotFoundException("user not found");
+                });
 
         if(!user.isAccountNonLocked()){
+            log.error("Login failed - account locked for {}", request.getEmail());
             throw new AccountLockedException("your account has been locked by admin, please contact administrator");
         }
 
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+            log.error("Login failed - invalid password for {}", request.getEmail());
             throw new BadCredentialsException("invalid password");
         }
 
         if (!user.isEnabled()) {
+            log.error("Login failed - account not verified for {}", request.getEmail());
             throw new AccountNotVerifiedException("account is not yet verified, please verify your account");
         }
 
         if (user.getRole() == Role.DOCTOR && !user.isAdminAuthorised()) {
+            log.error("Login failed - doctor {} not yet admin approved", request.getEmail());
             throw new AccountNotVerifiedException("Doctor account is pending admin approval");
         }
 
@@ -84,59 +104,71 @@ public class AuthenticationService {
         );
 
         var token = jwtService.generateToken(user);
+        log.info("Login successful for {}", request.getEmail());
         return new AuthenticationResponse(token);
     }
 
     public void verifyUser(VerfiyUserDto dto) {
+        log.info("Verifying user with email: {}", dto.getEmail());
+
         Optional<Users> optionalUsers = userRepository.findByEmail(dto.getEmail());
         if (optionalUsers.isPresent()) {
             Users user = optionalUsers.get();
             if (user.getVerificationCodeExpireAt().isBefore(LocalDateTime.now())) {
+                log.error("Verification failed - code expired for {}", dto.getEmail());
                 throw new VerficationCodeExpiredException("verification code has expired, try resending the code");
             }
             if (user.getVerificationCode().equals(dto.getVerificationCode())) {
                 user.setEnabled(true);
 
-                // For patients -> allow login directly
-                // For doctors -> still require admin approval
                 if (user.getRole() == Role.PATIENT) {
                     user.setAdminAuthorised(true);
+                    log.info("Patient {} auto-approved after verification", dto.getEmail());
                 }
 
                 user.setVerificationCode(null);
                 user.setVerificationCodeExpireAt(null);
                 userRepository.save(user);
+                log.info("User {} verified successfully", dto.getEmail());
             } else {
+                log.error("Verification failed - wrong code for {}", dto.getEmail());
                 throw new WrongVerificationCodeException("your verification code is incorrect, try again");
             }
         } else {
+            log.error("Verification failed - user not found: {}", dto.getEmail());
             throw new UserNotFoundException("user not found");
         }
     }
 
     public void resendVerificationCode(String email){
+        log.info("Resending verification code to {}", email);
+
         Optional<Users> optionalUsers=userRepository.findByEmail(email);
-        System.out.println("resending verification code");
         if(optionalUsers.isPresent()){
             Users user=optionalUsers.get();
-            System.out.println(user.toString());
+
             if(user.isEnabled()){
-                System.out.println("user already verified");
+                log.warn("Resend failed - user {} already verified", email);
                 throw new AlreadyVerifiedException("user already verified");
             }
+
             user.setVerificationCode(generateVerficationCode());
             user.setVerificationCodeExpireAt(LocalDateTime.now().plusMinutes(15));
+            log.debug("New verification code {} generated for {}", user.getVerificationCode(), email);
+
             sendVerificationEmail(user);
-            System.out.println("user saved");
             userRepository.save(user);
+            log.info("Verification code resent to {}", email);
         }
         else{
-            System.out.println("user not found");
+            log.error("Resend failed - user not found: {}", email);
             throw new UserNotFoundException("user not found");
         }
     }
 
     public void sendVerificationEmail(Users user){
+        log.info("Sending verification email to {}", user.getEmail());
+
         String subject="Email Verification Code";
         String verificationCode = "VERIFICATION CODE " + user.getVerificationCode();
         String htmlMessage = "<html>"
@@ -154,22 +186,27 @@ public class AuthenticationService {
 
         try{
             emailService.sendEmail(user.getEmail(),subject, htmlMessage);
+            log.info("Verification email sent to {}", user.getEmail());
         } catch (MessagingException e) {
+            log.error("Failed to send verification email to {}", user.getEmail(), e);
             throw new RuntimeException(e);
         }
-
     }
 
     private String generateVerficationCode(){
         Random random=new Random();
         int code=random.nextInt(900000)+100000;
-        return String.valueOf(code);
+        String generated = String.valueOf(code);
+        log.debug("Generated verification code: {}", generated);
+        return generated;
     }
 
     public Map<String, String> getCurrentUser(String authHeader) {
         String token = authHeader.substring(7);
         String email = jwtService.extractEmail(token);
         String role = jwtService.extractRole(token);
+
+        log.debug("Extracted current user from token: email={}, role={}", email, role);
 
         Map<String, String> response = new HashMap<>();
         response.put("email", email);

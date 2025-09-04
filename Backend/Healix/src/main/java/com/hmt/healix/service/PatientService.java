@@ -15,6 +15,7 @@ import com.hmt.healix.repository.PatientRepository;
 import com.hmt.healix.repository.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -28,6 +29,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class PatientService {
 
     private final PatientRepository patientRepository;
@@ -39,101 +41,114 @@ public class PatientService {
     private final DoctorSlotRepository doctorSlotRepository;
     private final PasswordEncoder passwordEncoder;
 
-
     public ResponseEntity<?> savePatient(String token, RegisterPatientDto registerPatientDto) {
-        String email= jwtService.extractEmail(token);
+        log.info("Saving new patient with token");
+        String email = jwtService.extractEmail(token);
+        log.debug("Extracted email from token: {}", email);
 
-
-        Users user=userRepository.findByEmail(email).orElseThrow(
-                () -> new UsersNotFoundException("user not found")
-        );
+        Users user = userRepository.findByEmail(email).orElseThrow(() -> {
+            log.error("User not found for email: {}", email);
+            return new UsersNotFoundException("user not found");
+        });
 
         if (patientRepository.findByUser_UserId(user.getUserId()).isPresent()) {
+            log.warn("Patient already registered for userId: {}", user.getUserId());
             throw new AlreadyExistsException("Patient already registered");
         }
 
-        Patient patient=patientMapper.toPatient(registerPatientDto);
-
+        Patient patient = patientMapper.toPatient(registerPatientDto);
         patient.setUser(user);
         patientRepository.save(patient);
+        log.info("Patient registered successfully for userId: {}", user.getUserId());
 
         return ResponseEntity.ok().build();
     }
 
     public Patient getPatientDetails(String token) {
-        String email= jwtService.extractEmail(token);
-        Users user=userRepository.findByEmail(email).orElseThrow(
-                () -> new UsersNotFoundException("user not found")
-        );
+        log.info("Fetching patient details");
+        String email = jwtService.extractEmail(token);
+        log.debug("Extracted email from token: {}", email);
 
-        Patient patient=patientRepository.findByUser_UserId(user.getUserId()).orElseThrow(
-                () -> new UsersNotFoundException("Patient data not found")
-        );
+        Users user = userRepository.findByEmail(email).orElseThrow(() -> {
+            log.error("User not found for email: {}", email);
+            return new UsersNotFoundException("user not found");
+        });
 
+        Patient patient = patientRepository.findByUser_UserId(user.getUserId()).orElseThrow(() -> {
+            log.error("Patient not found for userId: {}", user.getUserId());
+            return new UsersNotFoundException("Patient data not found");
+        });
+
+        log.info("Fetched patient details successfully for userId: {}", user.getUserId());
         return patient;
     }
 
     public void updatePatientDetails(String token, UpdatePatientDto updatePatientDto) {
+        log.info("Updating patient details");
         String email = jwtService.extractEmail(token);
-        Users user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsersNotFoundException("User not found"));
+        log.debug("Extracted email from token: {}", email);
+
+        Users user = userRepository.findByEmail(email).orElseThrow(() -> {
+            log.error("User not found for email: {}", email);
+            return new UsersNotFoundException("User not found");
+        });
 
         Patient patient = patientRepository.findByUser_UserId(user.getUserId())
-                .orElseThrow(() -> new UsersNotFoundException("Patient not found"));
+                .orElseThrow(() -> {
+                    log.error("Patient not found for userId: {}", user.getUserId());
+                    return new UsersNotFoundException("Patient not found");
+                });
 
         patientMapper.updatePatientFromDto(updatePatientDto, patient);
-        patient.setUser(user); // maintain relationship
-
+        patient.setUser(user);
         patientRepository.save(patient);
+
+        log.info("Updated patient details successfully for userId: {}", user.getUserId());
     }
 
+    public ResponseEntity<?> changePassword(HttpServletRequest request, ChangePasswordDto changePasswordDto) {
+        log.info("Attempting to change password");
+        String token = jwtService.getTokenFromAuthorization(request);
+        String email = jwtService.extractEmail(token);
+        log.debug("Extracted email from token: {}", email);
 
-    public ResponseEntity<?> changePassword(HttpServletRequest request, ChangePasswordDto changePasswordDto){
-        String token=jwtService
-                .getTokenFromAuthorization(request);
+        Users user = userRepository.findByEmail(email).orElseThrow(() -> {
+            log.error("User not found for email: {}", email);
+            return new UsersNotFoundException("User not found");
+        });
 
-        String email= jwtService.extractEmail(token);
-
-        Users user=userRepository.findByEmail(email).orElseThrow(
-                () -> new UsersNotFoundException("User not found")
-        );
-
-//        Users user=userRepository.findById(userId).orElseThrow(()->{
-//            throw new UserNotFoundException("user is not found");
-//        });
-
-        if(!passwordEncoder.matches(changePasswordDto.getOldPassword(), user.getPassword())){
+        if (!passwordEncoder.matches(changePasswordDto.getOldPassword(), user.getPassword())) {
+            log.warn("Old password does not match for user: {}", email);
             throw new PasswordNotMatchingException("old password is not matching");
         }
 
-        if(!(changePasswordDto.getNewPassword().equals(changePasswordDto.getConfirmPassword()))){
+        if (!(changePasswordDto.getNewPassword().equals(changePasswordDto.getConfirmPassword()))) {
+            log.warn("New password and confirm password do not match for user: {}", email);
             throw new PasswordNotMatchingException("your new password is not matching with confirmation password");
         }
 
         user.setPassword(passwordEncoder.encode(changePasswordDto.getNewPassword()));
         userRepository.save(user);
 
+        log.info("Password changed successfully for user: {}", email);
         return ResponseEntity.ok("Password changed successfully");
     }
 
-    public Page<Doctor> getDoctorsFromPatients(int page, int size){
+    public Page<Doctor> getDoctorsFromPatients(int page, int size) {
+        log.info("Fetching doctors list for patients. Page: {}, Size: {}", page, size);
         Pageable pageable = PageRequest.of(page, size);
         return doctorRepository.findAllByUserAdminAuthorisedTrueAndUserEnabledTrue(pageable);
     }
 
-    public Page<Doctor> searchDoctorFromPatients(String keyword, int page, int size){
+    public Page<Doctor> searchDoctorFromPatients(String keyword, int page, int size) {
+        log.info("Searching doctors with keyword: {}, Page: {}, Size: {}", keyword, page, size);
         Pageable pageable = PageRequest.of(page, size);
-        return doctorRepository.findAllBySpecializationContainingIgnoreCaseOrUserUsernameContainingIgnoreCase(keyword, keyword, pageable);
-
+        return doctorRepository.findAllBySpecializationContainingIgnoreCaseOrUserUsernameContainingIgnoreCase(
+                keyword, keyword, pageable);
     }
 
     public List<DoctorSlot> getDoctorSlotsForPatient(Long doctorId) {
-//        return doctorSlotRepository.findAvailableFutureSlots(
-//                doctorId,
-//                LocalDate.now(),
-//                LocalTime.now()
-//        );
-
+        log.info("Fetching available/cancelled doctor slots for doctorId: {}", doctorId);
         return doctorSlotRepository.findAvailableOrCancelledFutureSlots(
                 doctorId,
                 LocalDate.now(),
@@ -141,6 +156,4 @@ public class PatientService {
                 List.of(SlotStatus.AVAILABLE, SlotStatus.CANCELLED)
         );
     }
-
-
 }
